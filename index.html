@@ -1,6 +1,11 @@
 <!doctype html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prada 女裝手袋目錄</title><link rel="stylesheet" href="style.css?v=2"></head><body>
-<header><h1>PRADA 女裝手袋目錄</h1>
+<title>Prada 女裝目錄</title><link rel="stylesheet" href="style.css?v=3"></head><body>
+<header>
+<h1 id="pageTitle">PRADA 女裝目錄</h1>
+<div class="dept" id="dept">
+  <button type="button" data-d="bags" class="on">手袋</button>
+  <button type="button" data-d="rtw">成衣</button>
+</div>
 <div class="tabs" id="tabs"></div>
 <div class="filters">
 <input id="q" type="search" placeholder="搜尋名稱或貨號">
@@ -18,22 +23,26 @@
 <div class="count" id="count">載入中…</div><div class="grid" id="grid"></div>
 <div class="bar"><span id="n">已揀 0 款</span><button class="clr" id="clr">清除</button><button class="go" id="share">分享俾客人</button></div>
 <script>
-const TABS=[['','全部'],['shoulder','肩背包'],['mini','迷你手袋'],['tote','托特包'],['top','手挽包'],['backpack','背囊'],['briefcase','公事包']];
+const TABS={
+  bags:[['','全部'],['shoulder','肩背包'],['mini','迷你手袋'],['tote','托特包'],['top','手挽包'],['backpack','背囊'],['briefcase','公事包']],
+  rtw:[['','全部'],['outerwear','外套'],['jackets','外套與大衣'],['knitwear','針織'],['dresses','連身裙'],['shirts','恤衫與上衣'],['tshirts','T恤與衛衣'],['trousers','長褲與短褲'],['skirts','半身裙'],['denim','牛仔'],['leather_clothing','皮革服裝'],['pajamas','睡衣與內衣'],['underwear_beach','內衣與沙灘裝'],['swimwear','泳裝']]
+};
 const MAT_CATS=[['','全部物料'],['leather','皮革'],['nylon','尼龍'],['other','其他']];
 const LEATHER_TYPES=[['saffiano','Saffiano'],['nappa','Nappa'],['vernice','Vernice'],['suede','Suede'],['other_leather','其他皮革']];
-const DATA_VER='20261015b';
-let P=[],tab='',matCat='',leatherType='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
+const DATA_VER='20261015rtw';
+let ALL=[],P=[],dept='bags',tab='',matCat='',leatherType='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
 const $=id=>document.getElementById(id),fmt=n=>'HK$ '+n.toLocaleString('en');
 const esc=s=>(s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 function classifyMaterial(p){
   const mat=(p.material||''), name=(p.name_en||''), group=(p.material_group||'');
-  const blob=(mat+' '+name+' '+group).toLowerCase(), matL=mat.toLowerCase().trim();
-  if(blob.includes('re-nylon')||blob.includes('re nylon')||blob.includes('nylon')||matL==='vela'||matL.startsWith('vela ')||matL.startsWith('tessuto'))
+  const blob=(mat+' '+name+' '+group).toLowerCase(), matL=mat.toLowerCase().trim(), groupL=group.toLowerCase();
+  if(blob.includes('re-nylon')||blob.includes('re nylon')||blob.includes('nylon')||groupL==='nylon'||matL==='vela'||matL.startsWith('vela ')||matL.startsWith('tessuto'))
     return {cat:'nylon',lt:null};
   const otherFab=['linen','denim','corduroy','satin','velvet','silk','canvas','cotton','raffia','straw','duchesse','weave','grass','wicker'];
   if(otherFab.some(x=>blob.includes(x))||group==='面料'||group==='面料／皮革') return {cat:'other',lt:null};
+  if(['cotton','wool','cashmere','silk','viscose','linen/natural','linen'].includes(groupL)) return {cat:'other',lt:null};
   const leatherMark=['leather','calf','nappa','saffiano','vernice','suede','patent','cuir','vitello','vit.','daino','crocodile','nubuck','brushed','cuoio','皮革'];
-  if(group==='皮革'||group==='進口皮革'||leatherMark.some(x=>blob.includes(x))){
+  if(group==='皮革'||group==='進口皮革'||groupL==='leather'||groupL==='sheepskin'||leatherMark.some(x=>blob.includes(x))){
     let lt='other_leather';
     if(blob.includes('vernice')||blob.includes('varnish')||blob.includes('patent')) lt='vernice';
     else if(blob.includes('saffiano')) lt='saffiano';
@@ -44,6 +53,7 @@ function classifyMaterial(p){
   return {cat:'other',lt:null};
 }
 function ensureMaterialFields(p){
+  if(!p.department) p.department='bags';
   if(p.primary_material_category) return p;
   const {cat,lt}=classifyMaterial(p);
   p.primary_material_category=cat;
@@ -58,20 +68,37 @@ function matLabel(p){
   const m={saffiano:'Saffiano',nappa:'Nappa',vernice:'Vernice',suede:'Suede',other_leather:'皮革'};
   return m[leatherOf(p)]||'皮革';
 }
+function fillSelect(id,vals){
+  const el=$(id), cur=el.value;
+  el.innerHTML='';
+  el.add(new Option(id==='line'?'全部系列':'全部顏色',''));
+  [...new Set(vals)].filter(Boolean).sort().forEach(v=>el.add(new Option(v,v)));
+  if([...el.options].some(o=>o.value===cur)) el.value=cur;
+}
+function setDept(d){
+  dept=d;
+  tab='';
+  [...$('dept').children].forEach(b=>b.classList.toggle('on',b.getAttribute('data-d')===dept));
+  P=ALL.filter(p=>p.department===dept);
+  $('tabs').innerHTML=TABS[dept].map(([k,l])=>`<button type="button" data-k="${k}">${l}</button>`).join('');
+  fillSelect('line',P.map(p=>p.line));
+  fillSelect('color',P.map(p=>p.color_group));
+  document.title=dept==='bags'?'Prada 女裝手袋目錄':'Prada 女裝成衣目錄';
+  $('pageTitle').textContent=dept==='bags'?'PRADA 女裝手袋目錄':'PRADA 女裝成衣目錄';
+  render();
+}
 fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return r.json()}).then(d=>{
- P=(d.products||[]).map(ensureMaterialFields);
- const fill=(id,vals)=>[...new Set(vals)].filter(Boolean).sort().forEach(v=>$(id).add(new Option(v,v)));
- fill('line',P.map(p=>p.line));fill('color',P.map(p=>p.color_group));
- $('tabs').innerHTML=TABS.map(([k,l])=>`<button type="button" data-k="${k}">${l}</button>`).join('');
- $('tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;tab=b.getAttribute('data-k')||'';render()});
+ ALL=(d.products||[]).map(ensureMaterialFields);
  $('matCat').innerHTML=MAT_CATS.map(([k,l])=>`<button type="button" data-c="${k}">${l}</button>`).join('');
+ $('leatherType').innerHTML=LEATHER_TYPES.map(([k,l])=>`<button type="button" data-t="${k}">${l}</button>`).join('');
+ $('dept').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;setDept(b.getAttribute('data-d'))});
+ $('tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;tab=b.getAttribute('data-k')||'';render()});
  $('matCat').addEventListener('click',e=>{
    const b=e.target.closest('button[data-c]');if(!b)return;
    matCat=b.getAttribute('data-c')||'';
    if(matCat!=='leather') leatherType='';
    render();
  });
- $('leatherType').innerHTML=LEATHER_TYPES.map(([k,l])=>`<button type="button" data-t="${k}">${l}</button>`).join('');
  $('leatherType').addEventListener('click',e=>{
    const b=e.target.closest('button[data-t]');if(!b)return;
    const t=b.getAttribute('data-t')||'';
@@ -79,7 +106,7 @@ fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return 
    render();
  });
  ['q','line','color','price','sort'].forEach(i=>$(i).addEventListener('input',render));
- render();
+ setDept('bags');
 }).catch(()=>{$('count').textContent='載入失敗，請重新整理';});
 function render(){
  [...$('tabs').children].forEach(b=>b.classList.toggle('on',(b.getAttribute('data-k')||'')===tab));
@@ -99,13 +126,14 @@ function render(){
   return true;
  });
  if($('sort').value=='pa')r.sort((a,b)=>a.price-b.price);if($('sort').value=='pd')r.sort((a,b)=>b.price-a.price);
- $('count').textContent=r.length?`共 ${r.length} 款`:`呢個篩選冇貨品（0 款）`;
+ const label=dept==='bags'?'手袋':'成衣';
+ $('count').textContent=r.length?`共 ${r.length} 款${label}`:`呢個篩選冇貨品（0 款）`;
  $('grid').innerHTML=r.length?r.map(p=>`<div class="card${sel.has(p.code)?' sel':''}" data-c="${p.code}">
  <label><input type="checkbox" ${sel.has(p.code)?'checked':''}> 揀</label>
  <a href="${p.url}" target="_blank"><img loading="lazy" src="${p.image}" alt=""></a><div class="b">
  <div class="nm">${esc(p.name_zh)}</div><div class="cd">${p.code}</div>
- <div><span class="dot" style="background:${p.color_hex}"></span>${esc(p.color_zh)}${p.size?' · '+esc(p.size):''}</div>
- <div style="color:#666">${esc(p.line||'')}${p.line||p.material||matCatOf(p)?' · ':''}${esc(p.material||matLabel(p))}</div>
+ <div><span class="dot" style="background:${(p.color_hex||'#ccc').split('#')[1]?('#'+(p.color_hex||'').split('#').filter(Boolean)[0]):'#ccc'}"></span>${esc(p.color_zh)}${p.size?' · '+esc(p.size):''}</div>
+ <div style="color:#666">${esc(p.line||(p.subcat_zh||[])[0]||'')}${(p.line||(p.subcat_zh||[])[0]||p.material||matCatOf(p))?' · ':''}${esc(p.material||matLabel(p))}</div>
  <div class="pr">${fmt(p.price)}</div></div></div>`).join(''):'<div class="empty">試吓撳「全部物料」，或者改其他篩選。</div>';
  upd();
 }
@@ -114,6 +142,6 @@ function upd(){$('n').textContent=`已揀 ${sel.size} 款`;localStorage.setItem(
 $('clr').onclick=()=>{sel.clear();render()};
 $('share').onclick=async()=>{if(!sel.size)return alert('請先揀至少一款');
  const url=new URL('share.html?ids='+[...sel].join(','),location.href).href;
- if(navigator.share){try{await navigator.share({title:'Prada 精選手袋',url});return}catch(e){}}
+ if(navigator.share){try{await navigator.share({title:'Prada 精選',url});return}catch(e){}}
  try{await navigator.clipboard.writeText(url);alert('連結已複製：\n'+url)}catch(e){prompt('複製呢條連結：',url)}};
 </script></body></html>

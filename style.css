@@ -24,3 +24,7 @@ select,input{font-size:16px;padding:6px;border:1px solid #bbb;border-radius:6px;
 .leather-sub button.on{background:#333;border-color:#333;color:#fff}
 
 [hidden]{display:none!important}.empty{padding:24px 12px;color:#666;font-size:15px;grid-column:1/-1}
+
+.dept{display:flex;gap:8px;margin-bottom:8px}
+.dept button{flex:1;border:1px solid #111;background:#fff;border-radius:8px;padding:10px 12px;font-size:15px;font-weight:600}
+.dept button.on{background:#111;color:#fff}
