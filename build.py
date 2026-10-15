@@ -294,17 +294,29 @@ def classify_outerwear_length(name_en, subcats, height_cm=None, code=None, ow_ma
     name = (name_en or "").lower()
     if re.search(r"\bvest\b", name) or "capelet" in name or "sleeveless" in name:
         return "short"
-    if any(w in name for w in ("cropped", "crop ", "bomber", "blouson", "trucker", "bolero")):
+    if any(
+        w in name
+        for w in (
+            "cropped", "crop ", "bomber", "blouson", "trucker", "bolero",
+            "anorak", "windbreaker", "hoodie",
+        )
+    ):
         return "short"
     if "jacket" in name or "caban" in name or "blazer" in name:
         return "short"
     if any(w in name for w in ("trench", "overcoat", "duster", "car coat", "carcoat")):
         return "long"
-    if ("raincoat" in name) or ("parka" in name and "crop" not in name):
+    if (
+        ("raincoat" in name)
+        or ("parka" in name and "crop" not in name)
+        or any(w in name for w in ("down", "puffer", "quilted", "quilt "))
+    ):
         if height_cm is not None and height_cm >= 95:
             return "long"
         return "short"
     if re.search(r"\bcoat\b", name) and "jacket" not in name and "raincoat" not in name:
+        if height_cm is not None and height_cm < 90:
+            return "short"
         return "long"
     if height_cm is not None and height_cm >= 100:
         return "long"
@@ -481,7 +493,7 @@ def main():
         "source": {
             "bags": "https://www.prada.com/hk/en/womens/bags/c/10062HK",
             "rtw": "https://www.prada.com/hk/en/womens/ready-to-wear/c/10048HK",
-            "ui": "short-long-outerwear-v10",
+            "ui": "short-long-outerwear-v11",
         },
         "fetched": date.today().isoformat(),
         "count": len(out),

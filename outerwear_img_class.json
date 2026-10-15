@@ -81,7 +81,7 @@
   },
   "292253_1WQ9_F0324_S_OOO": {
     "label": "short",
-    "refine": "rain_default_short",
+    "refine": "soft_default_short",
     "ratio": 1.027,
     "method": "outer",
     "body": 266,
@@ -121,7 +121,7 @@
   },
   "292285_1WQ8_F0003_S_OOO": {
     "label": "long",
-    "refine": "rain_tall",
+    "refine": "soft_tall",
     "ratio": 1.02,
     "method": "outer",
     "body": 258,
@@ -211,7 +211,7 @@
   },
   "292350_18XO_F0040_S_OOO": {
     "label": "short",
-    "refine": "name_jacket",
+    "refine": "name_short",
     "ratio": 0.951,
     "method": "outer",
     "body": 254,
@@ -321,7 +321,7 @@
   },
   "292405_1WQ9_F0AA7_S_OOO": {
     "label": "long",
-    "refine": "rain_tall",
+    "refine": "soft_tall",
     "ratio": 1.103,
     "method": "protrusion",
     "body": 321,
@@ -341,7 +341,7 @@
   },
   "292427_199Y_F0011_S_MMO": {
     "label": "short",
-    "refine": "rain_default_short",
+    "refine": "soft_default_short",
     "ratio": 1.057,
     "method": "outer",
     "body": 260,
@@ -381,7 +381,7 @@
   },
   "29C285_1WQ8_F0002_S_OOO": {
     "label": "long",
-    "refine": "rain_tall",
+    "refine": "soft_tall",
     "ratio": 1.023,
     "method": "outer",
     "body": 270,
@@ -431,7 +431,7 @@
   },
   "29E171_1WQ9_F0A68_S_OOO": {
     "label": "short",
-    "refine": "rain_default_short",
+    "refine": "soft_default_short",
     "ratio": 1.066,
     "method": "outer",
     "body": 308,
@@ -561,7 +561,7 @@
   },
   "29Y171_1WQ9_F0AA7_S_WMO": {
     "label": "short",
-    "refine": "rain_default_short",
+    "refine": "soft_default_short",
     "ratio": 0.993,
     "method": "outer",
     "body": 274,
@@ -590,8 +590,8 @@
     "name": "Re-Nylon blouson jacket"
   },
   "29Y395_1WQ8_F0002_S_OOO": {
-    "label": "long",
-    "refine": "coat_name",
+    "label": "short",
+    "refine": "soft_default_short",
     "ratio": 1.019,
     "method": "outer",
     "body": 322,

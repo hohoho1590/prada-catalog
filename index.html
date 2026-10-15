@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prada 女裝目錄</title><link rel="stylesheet" href="style.css?v=9"></head><body>
+<title>Prada 女裝目錄</title><link rel="stylesheet" href="style.css?v=11"></head><body>
 <header>
 <h1 id="pageTitle">PRADA 女裝目錄</h1>
 <div class="dept" id="dept">
@@ -62,7 +62,7 @@ const COLOR_REST=[
 ];
 const COLOR_HEX={};
 [...COLOR_ORDER,...COLOR_REST].forEach((c,i)=>{COLOR_HEX[c.group]=c.hex; COLOR_RANK[c.group]=i;});
-const DATA_VER='20261015outerv9';
+const DATA_VER='20261015outerv11';
 let ALL=[],P=[],dept='bags',tab='',matCat='',leatherType='',bottomLen='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
 const $=id=>document.getElementById(id),fmt=n=>'HK$ '+n.toLocaleString('en');
 const esc=s=>(s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);

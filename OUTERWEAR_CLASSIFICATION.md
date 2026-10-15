@@ -1,16 +1,18 @@
 # Outerwear short vs long classification
 
-Women's RTW **全部總類** uses top-level **短外套** / **長外套** (API categories `outerwear` + `jackets` + leather jackets/coats are remapped).
+Women's RTW **全部總類** uses top-level **短外套** / **長外套** (API categories `outerwear` + `jackets` + leather jackets/coats are remapped). No bare 外套 / 外套與大衣.
 
-## Rule (user, revised)
+## Rule (user batch reclass 2026-10-15)
 
 Do **not** treat packshot body length > sleeve length alone as 長外套.
 Many short jackets (rain jacket, down jacket, blouson, parka) photograph with body ≥ sleeve.
 
 Prefer:
 
-- **短外套**: jacket / blouson / bomber / cropped / trucker / caban / blazer cues; near-equal or modest body>sleeve; raincoat/parka without clear long silhouette
-- **長外套**: trench / overcoat / duster / car coat; traditional "coat" (no jacket); raincoat/parka only when height ≥ ~95 cm or body/sleeve ratio ≥ ~1.30; strong long silhouette (ratio ≥ ~1.35)
+- **短外套**: jacket / blouson / bomber / cropped / trucker / caban / blazer / anorak / windbreaker; near-equal or modest body>sleeve; raincoat / parka / down / puffer / quilted without clear long silhouette
+- **長外套**: trench / overcoat / duster / car coat; traditional "coat" (no jacket) when not short silhouette; raincoat / parka / down only when height ≥ ~95 cm or body/sleeve ratio ≥ ~1.30; strong long silhouette (ratio ≥ ~1.35)
+
+Never treat the substring `coat` inside `raincoat` as long by itself.
 
 ## Method
 

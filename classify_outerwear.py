@@ -14,14 +14,15 @@ Method (documented for the catalog):
      where hem extends below cuffs and body flares).
 6. body_len = hem - shoulder; sleeve_len = cuff - shoulder.
 7. Decision (bias toward 短外套 unless clear long-coat signals):
-   - Name cues jacket / blouson / bomber / cropped / trucker / caban / blazer
-     → short (even when packshot body > sleeve).
-   - trench / overcoat / duster / car coat, or "coat" without jacket → long.
-   - raincoat / parka → long only if height >= 95 cm or ratio >= 1.30;
-     otherwise short (user: body taller than sleeves can still be short).
-   - Image alone: ratio >= 1.35 → long; <= 0.92 → short; else short
-     (do not treat modest body>sleeve as long).
+   - Name cues jacket / blouson / bomber / cropped / trucker / caban / blazer /
+     anorak / windbreaker → short (even when packshot body > sleeve).
+   - trench / overcoat / duster / car coat → long.
+   - raincoat / parka / down / puffer / quilted → long only if height >= 95 cm
+     or ratio >= 1.30; otherwise short. Never treat "coat" inside "raincoat".
+   - traditional "coat" (no jacket) → long (unless height < 90 and ratio < 1.15).
+   - Image alone: ratio >= 1.35 → long; <= 0.92 → short; else short.
    - Vest / capelet / sleeveless → short.
+   - Manual overrides in outerwear_overrides.json win last.
 
 Writes outerwear_length_map.json: {productCode: "short"|"long"}
 and outerwear_img_class.json with debug fields.
@@ -161,26 +162,46 @@ def analyze(path: Path):
 
 
 def decide(name, height_cm, img):
-    """Bias toward short unless clear long-coat name or strong long silhouette."""
+    """Bias toward short unless clear long-coat name or strong long silhouette.
+
+    Rules (user batch reclass 2026-10-15):
+    - Prefer SHORT for jacket/blouson/bomber/cropped/trucker/caban/blazer/
+      anorak/windbreaker — even if packshot body ≥ sleeve.
+    - LONG only for trench/overcoat/traditional coat, or raincoat/parka/down
+      that is clearly long (height ~≥95 cm or ratio ≥ ~1.30 / ≥1.35).
+    - Do NOT treat substring "coat" inside "raincoat" as long by itself.
+    - Down/puffer/quilted follow rain/parka (short unless clearly long).
+    """
     n = (name or "").lower()
     ratio = img["ratio"] if img else None
     if any(w in n for w in ("vest", "capelet", "sleeveless", "gilet")):
         return "short", "sleeveless"
-    if any(w in n for w in ("cropped", "crop ", "bomber", "blouson", "trucker", "bolero")):
+    if any(
+        w in n
+        for w in (
+            "cropped", "crop ", "bomber", "blouson", "trucker", "bolero",
+            "anorak", "windbreaker", "hoodie",
+        )
+    ):
         return "short", "name_short"
     # Jacket-family names are short even when packshot body > sleeve.
     if "jacket" in n or "caban" in n or "blazer" in n:
         return "short", "name_jacket"
     if any(w in n for w in ("trench", "overcoat", "duster", "car coat", "carcoat")):
         return "long", "name_long"
-    # "raincoat" contains "coat" — handle rain/parka before generic coat.
-    is_rain_or_parka = ("raincoat" in n) or ("parka" in n and "crop" not in n)
-    if is_rain_or_parka:
+    # raincoat / parka / down-puffer: short unless clearly long silhouette.
+    # "raincoat" contains "coat" — must come before generic coat.
+    is_soft_long_candidate = (
+        ("raincoat" in n)
+        or ("parka" in n and "crop" not in n)
+        or any(w in n for w in ("down", "puffer", "quilted", "quilt "))
+    )
+    if is_soft_long_candidate:
         if height_cm is not None and height_cm >= 95:
-            return "long", "rain_tall"
+            return "long", "soft_tall"
         if ratio is not None and ratio >= 1.30:
-            return "long", "rain_img_long"
-        return "short", "rain_default_short"
+            return "long", "soft_img_long"
+        return "short", "soft_default_short"
     is_coat = (
         ("coat" in n)
         and ("jacket" not in n)
@@ -188,6 +209,10 @@ def decide(name, height_cm, img):
         and ("raincoat" not in n)
     )
     if is_coat:
+        # Traditional coat name → long, but modest packshot height can stay short
+        # when silhouette is clearly jacket-like (ratio low + height short).
+        if height_cm is not None and height_cm < 90 and ratio is not None and ratio < 1.15:
+            return "short", "coat_short_sil"
         return "long", "coat_name"
     if img and ratio is not None:
         if ratio >= 1.35:

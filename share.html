@@ -1,11 +1,11 @@
 <!doctype html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>為您精選 · PRADA</title><link rel="stylesheet" href="style.css?v=9">
+<title>為您精選 · PRADA</title><link rel="stylesheet" href="style.css?v=11">
 <style>.grid{padding-bottom:30px;grid-template-columns:repeat(auto-fill,minmax(260px,1fr))}header{text-align:center}h1{font-size:22px;letter-spacing:.3em}p.s{margin:0;color:#666;font-size:14px}.btn{display:block;text-align:center;border:1px solid #111;padding:8px;margin-top:8px;text-decoration:none;border-radius:4px}</style></head><body>
 <header><h1>PRADA</h1><p class="s">為您精選 · Selected for you</p></header>
 <div class="count" id="count"></div><div class="grid" id="grid"></div>
 <p style="text-align:center;font-size:12px;color:#888;padding:0 12px 30px">價錢及存貨以 prada.com 及店舖為準 · Prices and availability subject to change</p>
 <script>
-const DATA_VER='20261015outerv9';
+const DATA_VER='20261015outerv11';
 const ids=(new URLSearchParams(location.search).get('ids')||'').split(',').filter(Boolean);
 const esc=s=>(s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 fetch('data.json?v='+DATA_VER).then(r=>r.json()).then(d=>{const m=Object.fromEntries(d.products.map(p=>[p.code,p]));
