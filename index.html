@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prada 女裝目錄</title><link rel="stylesheet" href="style.css?v=6"></head><body>
+<title>Prada 女裝目錄</title><link rel="stylesheet" href="style.css?v=7"></head><body>
 <header>
 <h1 id="pageTitle">PRADA 女裝目錄</h1>
 <div class="dept" id="dept">
@@ -21,8 +21,9 @@
 <select id="matCat"><option value="">全部物料</option></select>
 <select id="leatherType" hidden><option value="">全部皮革類型</option></select>
 <select id="owLen" hidden><option value="">全部長度</option></select>
+<select id="bottomLen" hidden><option value="">全部長度</option></select>
 <select id="price"><option value="">全部價錢</option><option value="0-10000">HK$10,000 以下</option><option value="10000-20000">HK$10,000–20,000</option><option value="20000-30000">HK$20,000–30,000</option><option value="30000-50000">HK$30,000–50,000</option><option value="50000-9999999">HK$50,000 以上</option></select>
-<select id="sort"><option value="">預設排序</option><option value="pa">價錢由低至高</option><option value="pd">價錢由高至低</option></select>
+<select id="sort"><option value="sleeve">預設（無袖→短袖→長袖）</option><option value="">不排序</option><option value="pa">價錢由低至高</option><option value="pd">價錢由高至低</option></select>
 </div>
 </header>
 <div class="count" id="count">載入中…</div><div class="grid" id="grid"></div>
@@ -35,8 +36,12 @@ const TABS={
 const MAT_BAGS=[['leather','皮革'],['nylon','尼龍'],['other','其他']];
 const MAT_RTW=[['leather','皮革'],['wool_cashmere','羊毛／羊絨'],['nylon','尼龍'],['cotton_linen','棉／麻'],['silk_other','絲／其他']];
 const LEATHER_TYPES=[['saffiano','Saffiano'],['nappa','Nappa'],['vernice','Vernice'],['suede','Suede'],['other_leather','其他皮革']];
-const OW_LENS=[['long','長外套'],['short','短外套']];
+const OW_LENS=[['short','短外套'],['long','長外套']];
 const OW_TABS=new Set(['outerwear','jackets','leather_clothing']);
+const BOTTOM_TABS=new Set(['trousers','skirts','denim']);
+const BOTTOM_LENS=[['short','短'],['long','長']];
+const SLEEVE_ORDER={sleeveless:0,short:1,long:2,unknown:3};
+const COLOR_RANK={};
 /* Preferred color order: 黑白紅橙黃綠藍紫金銀, then leftovers */
 const COLOR_ORDER=[
   {group:'黑色',label:'黑',hex:'#111111'},
@@ -59,14 +64,16 @@ const COLOR_REST=[
   {group:'無色',label:'無色',hex:'#edeae3'}
 ];
 const COLOR_HEX={};
-[...COLOR_ORDER,...COLOR_REST].forEach(c=>{COLOR_HEX[c.group]=c.hex;});
-const DATA_VER='20261015catcolor';
-let ALL=[],P=[],dept='bags',tab='',matCat='',leatherType='',owLen='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
+[...COLOR_ORDER,...COLOR_REST].forEach((c,i)=>{COLOR_HEX[c.group]=c.hex; COLOR_RANK[c.group]=i;});
+const DATA_VER='20261015sleevev7';
+let ALL=[],P=[],dept='bags',tab='',matCat='',leatherType='',owLen='',bottomLen='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
 const $=id=>document.getElementById(id),fmt=n=>'HK$ '+n.toLocaleString('en');
 const esc=s=>(s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
 function matCatOf(p){return p.primary_material_category||''}
 function leatherOf(p){return p.leather_type||''}
 function owOf(p){return p.outerwear_length||''}
+function bottomOf(p){return p.garment_length||''}
+function sleeveOf(p){return p.sleeve_type||'unknown'}
 function matLabel(p){
   if(p.department==='rtw'){
     const m={leather:'皮革',wool_cashmere:'羊毛／羊絨',nylon:'尼龍',cotton_linen:'棉／麻',silk_other:'絲／其他'};
@@ -199,10 +206,33 @@ function rebuildOwSelect(){
   el.value=owLen;
   el.hidden=el.options.length<=1;
 }
+function rebuildBottomSelect(){
+  const show=dept==='rtw' && BOTTOM_TABS.has(tab);
+  const el=$('bottomLen');
+  if(!show){
+    el.hidden=true;
+    bottomLen='';
+    return;
+  }
+  const base=P.filter(p=>(p.subcats||[]).includes(tab) && bottomOf(p));
+  const lenCounts=countBy(base, bottomOf);
+  const prev=bottomLen;
+  el.innerHTML='';
+  el.add(new Option(tab==='skirts'?'全部裙長':'全部褲長',''));
+  BOTTOM_LENS.forEach(([k,l])=>{
+    const n=lenCounts[k]||0;
+    const label=tab==='skirts'?(k==='short'?'短裙':'長裙'):(k==='short'?'短褲':'長褲');
+    if(n>0) el.add(new Option(label+'（'+n+'）',k));
+  });
+  if(prev && ![...el.options].some(o=>o.value===prev)) bottomLen='';
+  el.value=bottomLen;
+  el.hidden=el.options.length<=1;
+}
 function setDept(d){
   dept=d;
   tab='';
   owLen='';
+  bottomLen='';
   [...$('dept').children].forEach(b=>b.classList.toggle('on',b.getAttribute('data-d')===dept));
   P=ALL.filter(p=>p.department===dept);
   rebuildCatSelect();
@@ -218,7 +248,7 @@ function setDept(d){
 fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return r.json()}).then(d=>{
  ALL=(d.products||[]).map(p=>{if(!p.department)p.department='bags';return p;});
  $('dept').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;setDept(b.getAttribute('data-d'))});
- $('cat').addEventListener('change',()=>{tab=$('cat').value||'';if(!OW_TABS.has(tab))owLen='';render()});
+ $('cat').addEventListener('change',()=>{tab=$('cat').value||'';if(!OW_TABS.has(tab))owLen='';if(!BOTTOM_TABS.has(tab))bottomLen='';render()});
  $('matCat').addEventListener('change',()=>{
    matCat=$('matCat').value||'';
    if(matCat!=='leather') leatherType='';
@@ -227,6 +257,7 @@ fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return 
  });
  $('leatherType').addEventListener('change',()=>{leatherType=$('leatherType').value||'';render()});
  $('owLen').addEventListener('change',()=>{owLen=$('owLen').value||'';render()});
+ $('bottomLen').addEventListener('change',()=>{bottomLen=$('bottomLen').value||'';render()});
  $('colorBtn').addEventListener('click',e=>{
    e.stopPropagation();
    const open=$('colorMenu').hidden;
@@ -245,8 +276,27 @@ fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return 
  ['q','line','price','sort'].forEach(i=>$(i).addEventListener('input',render));
  setDept('bags');
 }).catch(()=>{$('count').textContent='載入失敗，請重新整理';});
+function colorRank(p){
+  const g=p.color_group||'';
+  return g in COLOR_RANK ? COLOR_RANK[g] : 100+g.charCodeAt(0);
+}
+function sleeveRank(p){
+  return SLEEVE_ORDER[sleeveOf(p)] ?? 3;
+}
+function lengthRank(p){
+  // short first, then long, then unknown/none
+  const v=owOf(p)||bottomOf(p)||'';
+  if(v==='short') return 0;
+  if(v==='long') return 1;
+  return 2;
+}
+function defaultSort(a,b){
+  // 無袖→短袖→長袖, then short→long garment, then similar colors
+  return (sleeveRank(a)-sleeveRank(b)) || (lengthRank(a)-lengthRank(b)) || (colorRank(a)-colorRank(b)) || ((a.price||0)-(b.price||0));
+}
 function render(){
  rebuildOwSelect();
+ rebuildBottomSelect();
  const q=$('q').value.trim().toLowerCase(),[lo,hi]=($('price').value||'0-9999999').split('-').map(Number);
  let r=P.filter(p=>{
   if(tab && !(p.subcats||[]).includes(tab)) return false;
@@ -254,24 +304,32 @@ function render(){
   if($('color').value && p.color_group!==$('color').value) return false;
   if(matCat && matCatOf(p)!==matCat) return false;
   if(leatherType && !(matCatOf(p)==='leather' && leatherOf(p)===leatherType)) return false;
-  if(owLen){
-    if(owOf(p)!==owLen) return false;
-  }
+  if(owLen && owOf(p)!==owLen) return false;
+  if(bottomLen && bottomOf(p)!==bottomLen) return false;
   if(!(p.price>=lo && p.price<hi)) return false;
   if(q && !(p.name_en+' '+p.name_zh+' '+p.code+' '+p.color_zh+' '+p.color_en+(p.material||'')).toLowerCase().includes(q)) return false;
   return true;
  });
- if($('sort').value=='pa')r.sort((a,b)=>a.price-b.price);if($('sort').value=='pd')r.sort((a,b)=>b.price-a.price);
+ const sv=$('sort').value;
+ if(sv==='pa') r.sort((a,b)=>a.price-b.price);
+ else if(sv==='pd') r.sort((a,b)=>b.price-a.price);
+ else if(sv==='sleeve') r.sort(defaultSort);
  const label=dept==='bags'?'手袋':'成衣';
  $('count').textContent=r.length?`共 ${r.length} 款${label}`:`呢個篩選冇貨品（0 款）`;
  $('grid').innerHTML=r.length?r.map(p=>{
-  const lenTag=owOf(p)==='long'?' · 長外套':owOf(p)==='short'?' · 短外套':'';
+  let lenTag='';
+  if(owOf(p)==='long') lenTag=' · 長外套';
+  else if(owOf(p)==='short') lenTag=' · 短外套';
+  else if(bottomOf(p)==='short') lenTag=(p.subcats||[]).includes('skirts')?' · 短裙':' · 短褲';
+  else if(bottomOf(p)==='long') lenTag=(p.subcats||[]).includes('skirts')?' · 長裙':' · 長褲';
+  const sl=sleeveOf(p);
+  const slTag=sl==='sleeveless'?' · 無袖':sl==='short'?' · 短袖':sl==='long'?' · 長袖':'';
   return `<div class="card${sel.has(p.code)?' sel':''}" data-c="${p.code}">
  <label><input type="checkbox" ${sel.has(p.code)?'checked':''}> 揀</label>
  <a href="${p.url}" target="_blank"><img loading="lazy" src="${p.image}" alt=""></a><div class="b">
  <div class="nm">${esc(p.name_zh)}</div><div class="cd">${p.code}</div>
  <div><span class="dot" style="background:${(p.color_hex||'#ccc').split('#')[1]?('#'+(p.color_hex||'').split('#').filter(Boolean)[0]):'#ccc'}"></span>${esc(p.color_zh)}${p.size?' · '+esc(p.size):''}</div>
- <div style="color:#666">${esc(p.line||(p.subcat_zh||[])[0]||'')}${(p.line||(p.subcat_zh||[])[0]||p.material||matCatOf(p))?' · ':''}${esc(p.material||matLabel(p))}${lenTag}</div>
+ <div style="color:#666">${esc(p.line||(p.subcat_zh||[])[0]||'')}${(p.line||(p.subcat_zh||[])[0]||p.material||matCatOf(p))?' · ':''}${esc(p.material||matLabel(p))}${lenTag}${dept==='rtw'?slTag:''}</div>
  <div class="pr">${fmt(p.price)}</div></div></div>`;
  }).join(''):'<div class="empty">試吓撳「全部物料」，或者改其他篩選。</div>';
  upd();

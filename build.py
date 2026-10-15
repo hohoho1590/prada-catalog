@@ -44,8 +44,15 @@ OTHER_FABRIC = (
 OUTERWEAR_SUBS = {"outerwear", "jackets", "leather_clothing"}
 OUTERWEAR_GARMENT = (
     "jacket", "coat", "raincoat", "parka", "cape", "blouson", "bomber",
-    "trench", "caban", "vest", "blazer", "anorak", "peacoat",
+    "trench", "caban", "vest", "blazer", "anorak", "peacoat", "hoodie",
 )
+# Estimated women's outerwear sleeve length (cm) on the same scale as ProductHeight.
+# API has body height only; ~75cm best matches named jacket vs coat on this catalog.
+EST_SLEEVE_CM = 75.0
+SLEEVE_TOLERANCE = 0.10  # within 10% of sleeve → short
+
+TROUSERS_SUBS = {"trousers", "denim"}  # denim may include jeans; length only if pant-like
+SKIRTS_SUBS = {"skirts"}
 
 
 def dim(h):
@@ -181,8 +188,72 @@ def classify_rtw(material, name_en, material_group, raw=""):
     return "silk_other", None
 
 
-def classify_outerwear_length(name_en, subcats):
-    """long / short / unknown for outerwear-like garments; None if not outerwear."""
+def product_height_cm(h):
+    ph = h.get("ProductHeight") or {}
+    try:
+        return float(ph.get("Value"))
+    except (TypeError, ValueError):
+        return None
+
+
+def classify_sleeve(name_en):
+    """sleeveless | short | long | unknown — from English product name."""
+    n = (name_en or "").lower()
+    if any(
+        w in n
+        for w in (
+            "sleeveless",
+            "sleeve-less",
+            "without sleeves",
+            "no sleeve",
+        )
+    ):
+        return "sleeveless"
+    if any(w in n for w in ("tank top", "tank ", " tank", "camisole", "halter", "gilet")):
+        return "sleeveless"
+    # vest as garment (not investment) — outerwear/knit vest
+    if re.search(r"\bvest\b", n):
+        return "sleeveless"
+    if any(
+        w in n
+        for w in (
+            "short-sleeve",
+            "short sleeve",
+            "shortsleeve",
+            "short sleeved",
+            "cap sleeve",
+            "cap-sleeve",
+        )
+    ):
+        return "short"
+    if any(
+        w in n
+        for w in (
+            "three-quarter sleeve",
+            "3/4 sleeve",
+            "¾ sleeve",
+        )
+    ):
+        return "short"
+    if any(
+        w in n
+        for w in (
+            "long-sleeve",
+            "long sleeve",
+            "longsleeve",
+            "long sleeved",
+        )
+    ):
+        return "long"
+    return "unknown"
+
+
+def classify_outerwear_length(name_en, subcats, height_cm=None):
+    """
+    long / short / unknown for outerwear-like garments; None if not outerwear.
+    Rule: body longer than sleeve (>10%) → long; body ≈ sleeve (within 10%) or shorter → short.
+    Prefer ProductHeight vs estimated sleeve; else name heuristics.
+    """
     subs = set(subcats or [])
     if not (subs & OUTERWEAR_SUBS):
         return None
@@ -191,9 +262,20 @@ def classify_outerwear_length(name_en, subcats):
         # leather skirts / shirts tagged under leather_clothing
         return None
 
-    if "cropped" in name or "crop " in name:
+    # Dimension rule (body vs estimated sleeve)
+    if height_cm is not None and height_cm > 0:
+        # Sleeveless outerwear (vests): treat as short — no sleeve to compare
+        if re.search(r"\bvest\b", name) or "capelet" in name:
+            return "short"
+        sleeve = EST_SLEEVE_CM
+        if height_cm > sleeve * (1.0 + SLEEVE_TOLERANCE):
+            return "long"
         return "short"
-    if "vest" in name:
+
+    # Name heuristics fallback
+    if "cropped" in name or "crop " in name or name.startswith("crop"):
+        return "short"
+    if re.search(r"\bvest\b", name) or "capelet" in name:
         return "short"
     if any(w in name for w in ("bomber", "blouson", "trucker", "blazer")):
         return "short"
@@ -201,8 +283,6 @@ def classify_outerwear_length(name_en, subcats):
         return "long"
     if re.search(r"\bcoat\b", name) and "jacket" not in name:
         return "long"
-    if "capelet" in name:
-        return "short"
     if re.search(r"\bcape\b", name):
         return "long"
     if "caban" in name:
@@ -212,7 +292,46 @@ def classify_outerwear_length(name_en, subcats):
     return "unknown"
 
 
+def classify_bottom_length(name_en, subcats, height_cm=None, kind="trousers"):
+    """short / long for trousers or skirts; None if not applicable."""
+    subs = set(subcats or [])
+    name = (name_en or "").lower()
+
+    if kind == "trousers":
+        if "trousers" not in subs and "denim" not in subs:
+            return None
+        # Only pant-like denim; skip jackets/shirts wrongly tagged
+        if "denim" in subs and "trousers" not in subs:
+            if not any(w in name for w in ("jean", "pant", "trouser", "short", "bermuda", "chino", "jogger")):
+                return None
+        # Name first (Bermudas mis-tagged with long height exist)
+        if any(w in name for w in ("short", "shorts", "bermuda", "bermudas", "hot pant")):
+            return "short"
+        if any(w in name for w in ("pant", "trouser", "jogger", "legging", "chino", "jean")):
+            return "long"
+        if height_cm is not None:
+            return "short" if height_cm < 80 else "long"
+        return "unknown"
+
+    if kind == "skirts":
+        if "skirts" not in subs:
+            return None
+        if any(w in name for w in ("miniskirt", "mini-skirt", "mini skirt", "mini-skirt")):
+            return "short"
+        if "mini" in name and "skirt" in name:
+            return "short"
+        if any(w in name for w in ("midi", "maxi", "full skirt", "full-skirt")):
+            return "long"
+        if height_cm is not None:
+            # minis ~32–45; knee/midi ~60–85; long midi ~120
+            return "short" if height_cm < 55 else "long"
+        return "unknown"
+
+    return None
+
+
 def build_product(h, department, sub_map, default_sub_zh):
+
     cats = h.get("Categories") or []
     subs = [sub_map[c] for c in sub_map if c in cats]
     col = lambda s: (s or "").split("|||")
@@ -227,13 +346,22 @@ def build_product(h, department, sub_map, default_sub_zh):
     raw_for_class = raw if (
         "nylon" in raw.lower() or "vela" in raw.lower() or "tessuto" in raw.lower()
     ) else ""
+    height_cm = product_height_cm(h)
+    sleeve = classify_sleeve(name_en)
+    bottom_len = None
     if department == "bags":
         cat, lt = classify_bags(mat_en, name_en, material_group, raw_for_class)
         ow_len = None
+        sleeve = None  # not applicable
     else:
         cat, lt = classify_rtw(mat_en, name_en, material_group, raw_for_class)
         subcat_ids = [s[0] for s in subs]
-        ow_len = classify_outerwear_length(name_en, subcat_ids)
+        ow_len = classify_outerwear_length(name_en, subcat_ids, height_cm)
+        # trousers / skirts short vs long
+        if set(subcat_ids) & {"trousers", "denim"}:
+            bottom_len = classify_bottom_length(name_en, subcat_ids, height_cm, "trousers")
+        if bottom_len is None and "skirts" in subcat_ids:
+            bottom_len = classify_bottom_length(name_en, subcat_ids, height_cm, "skirts")
     imgs = h.get("Images") or {}
     plp = imgs.get("PLPBKG") or ""
     image = (plp + "/_jcr_content/renditions/cq5dam.web.hebebed.800.800.jpg") if plp else ""
@@ -254,6 +382,9 @@ def build_product(h, department, sub_map, default_sub_zh):
         primary_material_category=cat,
         leather_type=lt,
         outerwear_length=ow_len,
+        garment_length=bottom_len,  # short/long for trousers & skirts
+        sleeve_type=sleeve,  # sleeveless/short/long/unknown for RTW
+        height_cm=height_cm,
         size=g(h, "BagDimension", "zh_HK"),
         dimensions=dim(h),
         subcats=[s[0] for s in subs],
@@ -296,6 +427,7 @@ def main():
         "source": {
             "bags": "https://www.prada.com/hk/en/womens/bags/c/10062HK",
             "rtw": "https://www.prada.com/hk/en/womens/ready-to-wear/c/10048HK",
+            "ui": "sleeve-bottom-ow-v7",
         },
         "fetched": date.today().isoformat(),
         "count": len(out),
@@ -313,13 +445,22 @@ def main():
         "rtw outerwear_length",
         C.Counter(o["outerwear_length"] for o in rtw if o["outerwear_length"] is not None),
     )
-    # also count None among outerwear subs
-    ow = [o for o in rtw if set(o["subcats"]) & OUTERWEAR_SUBS]
+    ow = [o for o in rtw if o["outerwear_length"] is not None]
+    print("outerwear classified", len(ow), C.Counter(o["outerwear_length"] for o in ow))
     print(
-        "among outerwear/jackets/leather_clothing",
-        len(ow),
-        C.Counter(o["outerwear_length"] for o in ow),
+        "rtw sleeve_type",
+        C.Counter(o["sleeve_type"] for o in rtw),
     )
+    bottoms = [o for o in rtw if o.get("garment_length") is not None]
+    print(
+        "rtw garment_length (trousers/skirts)",
+        len(bottoms),
+        C.Counter(o["garment_length"] for o in bottoms),
+    )
+    tr = [o for o in rtw if "trousers" in o["subcats"]]
+    sk = [o for o in rtw if "skirts" in o["subcats"]]
+    print("trousers length", C.Counter(o.get("garment_length") for o in tr))
+    print("skirts length", C.Counter(o.get("garment_length") for o in sk))
     print("missing image", sum(1 for o in out if not o["image"]))
     print("missing price", sum(1 for o in out if not o["price"]))
 
