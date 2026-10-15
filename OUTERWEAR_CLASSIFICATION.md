@@ -2,12 +2,15 @@
 
 Women's RTW **全部總類** uses top-level **短外套** / **長外套** (API categories `outerwear` + `jackets` + leather jackets/coats are remapped).
 
-## Rule (user)
+## Rule (user, revised)
 
-Compare garment **body length** to **sleeve length** on the product packshot:
+Do **not** treat packshot body length > sleeve length alone as 長外套.
+Many short jackets (rain jacket, down jacket, blouson, parka) photograph with body ≥ sleeve.
 
-- body longer than sleeves → **長外套**
-- otherwise (including near-equal) → **短外套**
+Prefer:
+
+- **短外套**: jacket / blouson / bomber / cropped / trucker / caban / blazer cues; near-equal or modest body>sleeve; raincoat/parka without clear long silhouette
+- **長外套**: trench / overcoat / duster / car coat; traditional "coat" (no jacket); raincoat/parka only when height ≥ ~95 cm or body/sleeve ratio ≥ ~1.30; strong long silhouette (ratio ≥ ~1.35)
 
 ## Method
 
@@ -18,7 +21,7 @@ Script: `classify_outerwear.py` → `outerwear_length_map.json` (consumed by `bu
 3. Hem ≈ lowest foreground in center columns (trim drawstring spikes).
 4. Cuff ≈ outer-column bottoms when cropped / sleeves at hem; else sleeve protrusion outside estimated body column (long coats).
 5. `ratio = body_len / sleeve_len`.
-6. Decide with image ratio plus name/height tie-breaks for near-equal cases (raincoats, coats, cropped/bomber/blouson → short, etc.).
+6. Decide with **name-first short bias**, then tall height / strong ratio for long coats. Manual overrides win last.
 
 Rebuild: run `classify_outerwear.py` (images in `ow_imgs/` if present) then `python3 build.py`.
 
@@ -28,4 +31,4 @@ File: `outerwear_overrides.json` — `{productCode: "short"|"long"}`.
 
 Loaded by `build.py` (wins over `outerwear_length_map.json`) and by
 `classify_outerwear.py` when rewriting the map, so rebuilds keep user
-corrections (e.g. 29S427 / 292252 packshots marked 短外套).
+corrections (e.g. 29S427 / 292252 / 292391 / 292348 / 29X966 / 292214 packshots marked 短外套).

@@ -7,10 +7,7 @@
     "body": 252,
     "sleeve": 278,
     "height_cm": 45.0,
-    "name": "Re-Nylon cropped convertible down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon cropped convertible down jacket"
   },
   "291805_178Y_F0002_S_222": {
     "label": "short",
@@ -20,23 +17,17 @@
     "body": 154,
     "sleeve": 212,
     "height_cm": 45.0,
-    "name": "Convertible cropped velvet down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Convertible cropped velvet down jacket"
   },
   "291805_18H4_F0008_S_222": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.683,
     "method": "outer",
     "body": 151,
     "sleeve": 221,
     "height_cm": 45.0,
-    "name": "Velvet down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Velvet down jacket"
   },
   "291973_11A9_F0002_S_212": {
     "label": "short",
@@ -46,49 +37,37 @@
     "body": 177,
     "sleeve": 276,
     "height_cm": 45.0,
-    "name": "Re-Nylon convertible cropped down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon convertible cropped down jacket"
   },
   "292166_1WQ9_F0002_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.992,
     "method": "outer",
     "body": 252,
     "sleeve": 254,
     "height_cm": 75.0,
-    "name": "Light Re-Nylon jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Light Re-Nylon jacket"
   },
   "292214_178Y_F0002_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "manual_override",
     "ratio": 1.0,
     "method": "outer",
     "body": 260,
     "sleeve": 260,
     "height_cm": 72.0,
-    "name": "Velvet down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Velvet down jacket"
   },
   "292214_18H4_F0008_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "manual_override",
     "ratio": 1.049,
     "method": "outer",
     "body": 277,
     "sleeve": 264,
     "height_cm": 72.0,
-    "name": "Velvet down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Velvet down jacket"
   },
   "292252_1WQ9_F0E18_S_WMO": {
     "label": "short",
@@ -98,23 +77,17 @@
     "body": 286,
     "sleeve": 264,
     "height_cm": 75.0,
-    "name": "Lightweight Re-Nylon hooded raincoat",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon hooded raincoat"
   },
   "292253_1WQ9_F0324_S_OOO": {
-    "label": "long",
-    "refine": "name_long",
+    "label": "short",
+    "refine": "rain_default_short",
     "ratio": 1.027,
     "method": "outer",
     "body": 266,
     "sleeve": 259,
     "height_cm": 75.0,
-    "name": "Lightweight Re-Nylon raincoat",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon raincoat"
   },
   "292264_16PM_F0124_S_OOO": {
     "label": "short",
@@ -124,49 +97,37 @@
     "body": 265,
     "sleeve": 252,
     "height_cm": 72.0,
-    "name": "Canvas trucker jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Canvas trucker jacket"
   },
   "292267_1WQ9_F0518_S_WMO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.787,
     "method": "outer",
     "body": 336,
     "sleeve": 427,
     "height_cm": 48.0,
-    "name": "Lightweight Re-Nylon jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon jacket"
   },
   "292267_1WQ9_F0AA7_S_WMO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.786,
     "method": "outer",
     "body": 191,
     "sleeve": 243,
     "height_cm": 48.0,
-    "name": "Lightweight Re-Nylon jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon jacket"
   },
   "292285_1WQ8_F0003_S_OOO": {
     "label": "long",
-    "refine": "name_long",
+    "refine": "rain_tall",
     "ratio": 1.02,
     "method": "outer",
     "body": 258,
     "sleeve": 253,
     "height_cm": 102.0,
-    "name": "Re-Nylon raincoat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Re-Nylon raincoat"
   },
   "292288_17IB_F0002_S_EMO": {
     "label": "short",
@@ -176,23 +137,17 @@
     "body": 215,
     "sleeve": 268,
     "height_cm": 60.0,
-    "name": "Cropped compact poplin down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Cropped compact poplin down jacket"
   },
   "292321_1WQ9_F04WW_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.0,
     "method": "outer",
     "body": 229,
     "sleeve": 229,
     "height_cm": 62.0,
-    "name": "Re-Nylon jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon jacket"
   },
   "292328_1WQ9_F0AIN_S_OOO": {
     "label": "short",
@@ -202,10 +157,7 @@
     "body": 254,
     "sleeve": 249,
     "height_cm": 58.0,
-    "name": "Re-Nylon vest",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon vest"
   },
   "292332_1WQ9_F0403_S_BAO": {
     "label": "short",
@@ -215,36 +167,27 @@
     "body": 258,
     "sleeve": 226,
     "height_cm": 75.0,
-    "name": "Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon blouson jacket"
   },
   "292343_17VA_F0124_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.959,
     "method": "outer",
     "body": 208,
     "sleeve": 217,
     "height_cm": 66.0,
-    "name": "Fleece jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Fleece jacket"
   },
   "292343_17VA_F0324_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.905,
     "method": "outer",
     "body": 200,
     "sleeve": 221,
     "height_cm": 66.0,
-    "name": "Fleece jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Fleece jacket"
   },
   "292345_1WQ9_F0A68_S_OOO": {
     "label": "short",
@@ -254,36 +197,27 @@
     "body": 181,
     "sleeve": 225,
     "height_cm": 56.0,
-    "name": "Lightweight Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon blouson jacket"
   },
   "292348_1WQ8_F0002_S_OOO": {
     "label": "short",
-    "refine": "name_short",
+    "refine": "manual_override",
     "ratio": 1.079,
     "method": "outer",
     "body": 246,
     "sleeve": 228,
     "height_cm": 75.0,
-    "name": "Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon blouson jacket"
   },
   "292350_18XO_F0040_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.951,
     "method": "outer",
     "body": 254,
     "sleeve": 267,
     "height_cm": 66.0,
-    "name": "Technical fleece hoodie jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Technical fleece hoodie jacket"
   },
   "292356_19CB_F0028_S_OOO": {
     "label": "short",
@@ -293,10 +227,7 @@
     "body": 128,
     "sleeve": 248,
     "height_cm": 48.0,
-    "name": "Canvas blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Canvas blouson jacket"
   },
   "292358_188O_F0C56_S_OOO": {
     "label": "short",
@@ -306,23 +237,17 @@
     "body": 217,
     "sleeve": 233,
     "height_cm": 68.0,
-    "name": "Checked chambray blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Checked chambray blouson jacket"
   },
   "292362_19YE_F0112_S_OOO": {
-    "label": "long",
-    "refine": "img_long",
+    "label": "short",
+    "refine": "name_jacket",
     "ratio": 1.279,
     "method": "protrusion",
     "body": 321,
     "sleeve": 251,
     "height_cm": 82.0,
-    "name": "Washed Re-Nylon rain jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Washed Re-Nylon rain jacket"
   },
   "292372_19QM_F05I0_S_OOO": {
     "label": "long",
@@ -332,10 +257,7 @@
     "body": 281,
     "sleeve": 278,
     "height_cm": 98.0,
-    "name": "Old piqué coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Old piqué coat"
   },
   "292373_19RP_F05IN_S_OOO": {
     "label": "short",
@@ -345,10 +267,7 @@
     "body": 247,
     "sleeve": 233,
     "height_cm": 77.0,
-    "name": "Piqué blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Piqué blouson jacket"
   },
   "292385_1WQ9_F0AA7_S_OOO": {
     "label": "short",
@@ -358,10 +277,7 @@
     "body": 235,
     "sleeve": 272,
     "height_cm": 60.0,
-    "name": "Lightweight Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon blouson jacket"
   },
   "292389_1WQ8_F0324_S_OOO": {
     "label": "short",
@@ -371,10 +287,7 @@
     "body": 260,
     "sleeve": 259,
     "height_cm": 70.0,
-    "name": "Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon blouson jacket"
   },
   "292390_1WQ8_F0324_S_OOO": {
     "label": "short",
@@ -384,23 +297,17 @@
     "body": 246,
     "sleeve": 249,
     "height_cm": 68.0,
-    "name": "Re-Nylon down vest",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon down vest"
   },
   "292391_1WQ8_F0002_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "manual_override",
     "ratio": 1.048,
     "method": "outer",
     "body": 283,
     "sleeve": 270,
     "height_cm": 82.0,
-    "name": "Re-Nylon rain jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Re-Nylon rain jacket"
   },
   "292394_1WQ9_F0002_S_OOO": {
     "label": "short",
@@ -410,23 +317,17 @@
     "body": 150,
     "sleeve": 223,
     "height_cm": 52.0,
-    "name": "Lightweight Re-Nylon cropped down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon cropped down jacket"
   },
   "292405_1WQ9_F0AA7_S_OOO": {
     "label": "long",
-    "refine": "name_long",
+    "refine": "rain_tall",
     "ratio": 1.103,
     "method": "protrusion",
     "body": 321,
     "sleeve": 291,
     "height_cm": 105.0,
-    "name": "Lightweight Re-Nylon raincoat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Lightweight Re-Nylon raincoat"
   },
   "292425_199Y_F0010_S_WAO": {
     "label": "short",
@@ -436,23 +337,17 @@
     "body": 132,
     "sleeve": 129,
     "height_cm": 30.0,
-    "name": "Technical fabric capelet with shearling trim",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Technical fabric capelet with shearling trim"
   },
   "292427_199Y_F0011_S_MMO": {
-    "label": "long",
-    "refine": "name_long",
+    "label": "short",
+    "refine": "rain_default_short",
     "ratio": 1.057,
     "method": "outer",
     "body": 260,
     "sleeve": 246,
     "height_cm": 75.0,
-    "name": "Technical fabric parka with shearling trim",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Technical fabric parka with shearling trim"
   },
   "292465_60EE_F0002_S_OOO": {
     "label": "short",
@@ -462,23 +357,17 @@
     "body": 181,
     "sleeve": 206,
     "height_cm": 62.0,
-    "name": "Reversible fleece and Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Reversible fleece and Re-Nylon blouson jacket"
   },
   "29B357_1WQ9_F0AEZ_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.029,
     "method": "outer",
     "body": 210,
     "sleeve": 204,
     "height_cm": 70.0,
-    "name": "Lightweight, quilted Re-Nylon jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight, quilted Re-Nylon jacket"
   },
   "29C210_1WQ9_F0002_S_OOO": {
     "label": "short",
@@ -488,23 +377,17 @@
     "body": 205,
     "sleeve": 212,
     "height_cm": 70.0,
-    "name": "Lightweight Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Lightweight Re-Nylon blouson jacket"
   },
   "29C285_1WQ8_F0002_S_OOO": {
     "label": "long",
-    "refine": "name_long",
+    "refine": "rain_tall",
     "ratio": 1.023,
     "method": "outer",
     "body": 270,
     "sleeve": 264,
     "height_cm": 102.0,
-    "name": "Re-Nylon raincoat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Re-Nylon raincoat"
   },
   "29C362_19YE_F0112_S_OOO": {
     "label": "short",
@@ -514,10 +397,7 @@
     "body": 181,
     "sleeve": 284,
     "height_cm": 55.0,
-    "name": "Washed Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Washed Re-Nylon blouson jacket"
   },
   "29C372_19QM_F05HY_S_OOO": {
     "label": "short",
@@ -527,10 +407,7 @@
     "body": 248,
     "sleeve": 223,
     "height_cm": 77.0,
-    "name": "Old piqué blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Old piqué blouson jacket"
   },
   "29C403_6012_F0044_S_OOO": {
     "label": "short",
@@ -540,49 +417,37 @@
     "body": 164,
     "sleeve": 242,
     "height_cm": 52.0,
-    "name": "Cropped technical poplin down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Cropped technical poplin down jacket"
   },
   "29D408_1WQ8_F0002_S_OOO": {
-    "label": "long",
-    "refine": "img_long",
+    "label": "short",
+    "refine": "name_jacket",
     "ratio": 1.307,
     "method": "protrusion",
     "body": 298,
     "sleeve": 228,
     "height_cm": 88.0,
-    "name": "Re-Nylon down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon down jacket"
   },
   "29E171_1WQ9_F0A68_S_OOO": {
-    "label": "long",
-    "refine": "name_long",
+    "label": "short",
+    "refine": "rain_default_short",
     "ratio": 1.066,
     "method": "outer",
     "body": 308,
     "sleeve": 289,
     "height_cm": 90.0,
-    "name": "Lightweight Re-Nylon raincoat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Lightweight Re-Nylon raincoat"
   },
   "29L131_1ACZ_F0308_S_AMO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.103,
     "method": "outer",
     "body": 257,
     "sleeve": 233,
     "height_cm": 68.0,
-    "name": "Re-Wool down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Wool down jacket"
   },
   "29P303_17PM_F0002_S_OOO": {
     "label": "short",
@@ -592,10 +457,7 @@
     "body": 260,
     "sleeve": 248,
     "height_cm": 76.0,
-    "name": "Re-Nylon and shearling down vest",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon and shearling down vest"
   },
   "29S131_1ACZ_F0308_S_AMO": {
     "label": "short",
@@ -605,23 +467,17 @@
     "body": 375,
     "sleeve": 363,
     "height_cm": 68.0,
-    "name": "Re-Wool down vest",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Wool down vest"
   },
   "29S362_19YE_F0040_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.67,
     "method": "outer",
     "body": 177,
     "sleeve": 264,
     "height_cm": 55.0,
-    "name": "Washed Re-Nylon jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Washed Re-Nylon jacket"
   },
   "29S427_199Y_F0002_S_OOO": {
     "label": "short",
@@ -631,23 +487,17 @@
     "body": 263,
     "sleeve": 262,
     "height_cm": 75.0,
-    "name": "Technical fabric parka",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Technical fabric parka"
   },
   "29T346_18UU_F0334_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.968,
     "method": "outer",
     "body": 275,
     "sleeve": 284,
     "height_cm": 76.0,
-    "name": "Technical fabric jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Technical fabric jacket"
   },
   "29X166_1WQ9_F0002_S_OOO": {
     "label": "short",
@@ -657,10 +507,7 @@
     "body": 135,
     "sleeve": 254,
     "height_cm": 50.0,
-    "name": "Light Re-Nylon cropped jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Light Re-Nylon cropped jacket"
   },
   "29X166_1WQ9_F0594_S_OOO": {
     "label": "short",
@@ -670,10 +517,7 @@
     "body": 142,
     "sleeve": 204,
     "height_cm": 50.0,
-    "name": "Light Re-Nylon cropped jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Light Re-Nylon cropped jacket"
   },
   "29X207_1WQ8_F0002_S_OOO": {
     "label": "short",
@@ -683,62 +527,47 @@
     "body": 251,
     "sleeve": 255,
     "height_cm": 65.0,
-    "name": "Re-Nylon down vest",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon down vest"
   },
   "29X289_17ID_F0065_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.033,
     "method": "outer",
     "body": 309,
     "sleeve": 299,
     "height_cm": 75.0,
-    "name": "Medium-weight old Panama cotton down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Medium-weight old Panama cotton down jacket"
   },
   "29X389_6012_F0044_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.022,
     "method": "outer",
     "body": 236,
     "sleeve": 231,
     "height_cm": 70.0,
-    "name": "Technical poplin down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Technical poplin down jacket"
   },
   "29X966_1WQ8_F0002_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "manual_override",
     "ratio": 1.034,
     "method": "outer",
     "body": 270,
     "sleeve": 261,
     "height_cm": 72.0,
-    "name": "Re-Nylon down jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon down jacket"
   },
   "29Y171_1WQ9_F0AA7_S_WMO": {
-    "label": "long",
-    "refine": "name_long",
+    "label": "short",
+    "refine": "rain_default_short",
     "ratio": 0.993,
     "method": "outer",
     "body": 274,
     "sleeve": 276,
     "height_cm": 90.0,
-    "name": "Lightweight Re-Nylon hooded raincoat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Lightweight Re-Nylon hooded raincoat"
   },
   "29Y365_1WQ8_F0089_S_OOO": {
     "label": "short",
@@ -748,10 +577,7 @@
     "body": 237,
     "sleeve": 228,
     "height_cm": 75.0,
-    "name": "Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon blouson jacket"
   },
   "29Y365_1WQ8_F0322_S_OOO": {
     "label": "short",
@@ -761,10 +587,7 @@
     "body": 242,
     "sleeve": 232,
     "height_cm": 75.0,
-    "name": "Re-Nylon blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon blouson jacket"
   },
   "29Y395_1WQ8_F0002_S_OOO": {
     "label": "long",
@@ -774,10 +597,7 @@
     "body": 322,
     "sleeve": 316,
     "height_cm": 91.0,
-    "name": "Re-Nylon down coat",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Nylon down coat"
   },
   "55861_180Y_F0334_S_OOO": {
     "label": "short",
@@ -787,75 +607,57 @@
     "body": 190,
     "sleeve": 193,
     "height_cm": 49.0,
-    "name": "Cropped suede jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Cropped suede jacket"
   },
   "56A226_173B_F0324_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.061,
     "method": "outer",
     "body": 260,
     "sleeve": 245,
     "height_cm": 77.0,
-    "name": "Suede caban jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Suede caban jacket"
   },
   "56A233_180Y_F0901_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.036,
     "method": "outer",
     "body": 231,
     "sleeve": 223,
     "height_cm": 72.0,
-    "name": "Suede caban jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Suede caban jacket"
   },
   "56A236_1835_F0012_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.021,
     "method": "outer",
     "body": 244,
     "sleeve": 239,
     "height_cm": 75.0,
-    "name": "Suede caban jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Suede caban jacket"
   },
   "56A242_180O_F0002_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.004,
     "method": "outer",
     "body": 254,
     "sleeve": 253,
     "height_cm": 82.0,
-    "name": "Antiqued leather caban jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Antiqued leather caban jacket"
   },
   "56A242_180O_F0134_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.015,
     "method": "outer",
     "body": 271,
     "sleeve": 267,
     "height_cm": 82.0,
-    "name": "Antiqued leather caban jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Antiqued leather caban jacket"
   },
   "56A245_19QR_F0E18_S_OOO": {
     "label": "long",
@@ -865,23 +667,17 @@
     "body": 315,
     "sleeve": 302,
     "height_cm": 102.0,
-    "name": "Nappa leather coat",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather coat"
   },
   "56A259_1ZXR_F0BH2_S_OOO": {
     "label": "long",
-    "refine": "img_long",
+    "refine": "coat_name",
     "ratio": 1.151,
     "method": "protrusion",
     "body": 321,
     "sleeve": 279,
     "height_cm": 102.0,
-    "name": "Shearling coat",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Shearling coat"
   },
   "56A262_1969_F0324_S_OOO": {
     "label": "long",
@@ -891,10 +687,7 @@
     "body": 324,
     "sleeve": 323,
     "height_cm": 116.0,
-    "name": "Leather coat",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Leather coat"
   },
   "58A234_162B_F0134_S_OOO": {
     "label": "short",
@@ -904,10 +697,7 @@
     "body": 277,
     "sleeve": 248,
     "height_cm": 68.0,
-    "name": "Nappa leather bomber jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather bomber jacket"
   },
   "58A237_172L_F0065_S_OOO": {
     "label": "short",
@@ -917,88 +707,67 @@
     "body": 255,
     "sleeve": 251,
     "height_cm": 68.0,
-    "name": "Shearling bomber jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Shearling bomber jacket"
   },
   "58A238_172N_F0807_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.543,
     "method": "outer",
     "body": 145,
     "sleeve": 267,
     "height_cm": 50.0,
-    "name": "Leather and shearling jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Leather and shearling jacket"
   },
   "58A268_17JY_F0032_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.907,
     "method": "outer",
     "body": 255,
     "sleeve": 281,
     "height_cm": 69.0,
-    "name": "Hooded nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Hooded nappa leather jacket"
   },
   "58A270_162O_F0201_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.865,
     "method": "outer",
     "body": 256,
     "sleeve": 296,
     "height_cm": 68.0,
-    "name": "Suede jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Suede jacket"
   },
   "58A272_182O_F0002_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.819,
     "method": "outer",
     "body": 199,
     "sleeve": 243,
     "height_cm": 62.0,
-    "name": "Nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather jacket"
   },
   "58A276_19QQ_F0002_S_OOO": {
     "label": "short",
-    "refine": "img_override_h",
+    "refine": "name_jacket",
     "ratio": 1.175,
     "method": "outer",
     "body": 228,
     "sleeve": 194,
     "height_cm": 60.0,
-    "name": "Antiqued nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Antiqued nappa leather jacket"
   },
   "58A277_19QR_F0W1J_S_OOO": {
     "label": "short",
-    "refine": "img_override_h",
+    "refine": "name_jacket",
     "ratio": 1.171,
     "method": "outer",
     "body": 226,
     "sleeve": 193,
     "height_cm": 60.0,
-    "name": "Nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather jacket"
   },
   "58A285_180Y_F0207_S_OOO": {
     "label": "short",
@@ -1008,10 +777,7 @@
     "body": 231,
     "sleeve": 240,
     "height_cm": 69.0,
-    "name": "Suede blouson jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Suede blouson jacket"
   },
   "58A289_19WL_F0304_S_OOO": {
     "label": "short",
@@ -1021,49 +787,37 @@
     "body": 115,
     "sleeve": 251,
     "height_cm": 45.0,
-    "name": "Cropped nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Cropped nappa leather jacket"
   },
   "58A289_6914_F0D28_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.488,
     "method": "outer",
     "body": 122,
     "sleeve": 250,
     "height_cm": 45.0,
-    "name": "Nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather jacket"
   },
   "58A291_19WL_F0002_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.517,
     "method": "outer",
     "body": 134,
     "sleeve": 259,
     "height_cm": 45.0,
-    "name": "Nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather jacket"
   },
   "58A292_180Y_F029M_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.862,
     "method": "outer",
     "body": 188,
     "sleeve": 218,
     "height_cm": 66.0,
-    "name": "Suede jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Suede jacket"
   },
   "58A293_19WL_F0054_S_OOO": {
     "label": "short",
@@ -1073,75 +827,57 @@
     "body": 126,
     "sleeve": 231,
     "height_cm": 45.0,
-    "name": "Cropped nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Cropped nappa leather jacket"
   },
   "58A295_180Y_F0JRS_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.058,
     "method": "outer",
     "body": 238,
     "sleeve": 225,
     "height_cm": 75.0,
-    "name": "Suede jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Suede jacket"
   },
   "58A302_6157_F033A_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.635,
     "method": "outer",
     "body": 160,
     "sleeve": 252,
     "height_cm": 55.0,
-    "name": "Hooded shearling jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Hooded shearling jacket"
   },
   "58A303_16IL_F0003_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.839,
     "method": "outer",
     "body": 187,
     "sleeve": 223,
     "height_cm": 60.0,
-    "name": "Nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather jacket"
   },
   "58A316_6629_F0041_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.814,
     "method": "outer",
     "body": 193,
     "sleeve": 237,
     "height_cm": 64.0,
-    "name": "Bonded nappa leather and houndstooth check fabric jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Bonded nappa leather and houndstooth check fabric jacket"
   },
   "58A319_6914_F0D28_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.987,
     "method": "outer",
     "body": 233,
     "sleeve": 236,
     "height_cm": 64.0,
-    "name": "Nappa leather jacket",
-    "prev_subs": [
-      "leather_clothing"
-    ]
+    "name": "Nappa leather jacket"
   },
   "GFB340_19VI_F0008_S_OOO": {
     "label": "short",
@@ -1151,50 +887,37 @@
     "body": 212,
     "sleeve": 246,
     "height_cm": 69.0,
-    "name": "Denim trucker jacket",
-    "prev_subs": [
-      "outerwear",
-      "denim"
-    ]
+    "name": "Denim trucker jacket"
   },
   "P503QN_13NH_F0480_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.968,
     "method": "outer",
     "body": 273,
     "sleeve": 282,
     "height_cm": 77.0,
-    "name": "Single-breasted kid mohair jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted kid mohair jacket"
   },
   "P507Q_1ACZ_F0308_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.043,
     "method": "outer",
     "body": 264,
     "sleeve": 253,
     "height_cm": 78.0,
-    "name": "Re-Wool single-breasted jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Re-Wool single-breasted jacket"
   },
   "P509Q_6011_F0480_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.031,
     "method": "outer",
     "body": 299,
     "sleeve": 290,
     "height_cm": 78.0,
-    "name": "Single-breasted mélange hopsack jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted mélange hopsack jacket"
   },
   "P513Q_10YP_F0009_S_OOO": {
     "label": "short",
@@ -1204,10 +927,7 @@
     "body": 201,
     "sleeve": 331,
     "height_cm": 50.0,
-    "name": "Chino blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Chino blouson jacket"
   },
   "P513Q_10YP_F0572_S_OOO": {
     "label": "short",
@@ -1217,10 +937,7 @@
     "body": 91,
     "sleeve": 217,
     "height_cm": 50.0,
-    "name": "Chino blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Chino blouson jacket"
   },
   "P536OG_187P_F0008_S_OOO": {
     "label": "short",
@@ -1230,127 +947,97 @@
     "body": 95,
     "sleeve": 224,
     "height_cm": 43.0,
-    "name": "Poplin blouson jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Poplin blouson jacket"
   },
   "P545P_16OX_F0008_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.986,
     "method": "outer",
     "body": 287,
     "sleeve": 291,
     "height_cm": 74.0,
-    "name": "Single-breasted chevron jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted chevron jacket"
   },
   "P563P_1XMY_F0002_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.984,
     "method": "outer",
     "body": 241,
     "sleeve": 245,
     "height_cm": 72.0,
-    "name": "Single-breasted jacket in superfine wool",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted jacket in superfine wool"
   },
   "P567P_171S_F0308_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.612,
     "method": "outer",
     "body": 145,
     "sleeve": 237,
     "height_cm": 50.0,
-    "name": "Single-breasted double tweed jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted double tweed jacket"
   },
   "P568P_15K5_F0480_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.67,
     "method": "outer",
     "body": 152,
     "sleeve": 227,
     "height_cm": 50.0,
-    "name": "Single-breasted Princes of Wales mouliné jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted Princes of Wales mouliné jacket"
   },
   "P570P_17VZ_F0008_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.011,
     "method": "outer",
     "body": 267,
     "sleeve": 264,
     "height_cm": 70.0,
-    "name": "Single-breasted rush stitch jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted rush stitch jacket"
   },
   "P592P_18VA_F063H_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.938,
     "method": "outer",
     "body": 240,
     "sleeve": 256,
     "height_cm": 70.0,
-    "name": "Single-breasted Prince Of Wales checked wool jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted Prince Of Wales checked wool jacket"
   },
   "P593PG_1XMY_F0008_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.984,
     "method": "outer",
     "body": 247,
     "sleeve": 251,
     "height_cm": 70.0,
-    "name": "Single-breasted wool jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted wool jacket"
   },
   "P595PH_1N01_F0308_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.045,
     "method": "outer",
     "body": 258,
     "sleeve": 247,
     "height_cm": 74.0,
-    "name": "Double-breasted checked wool jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Double-breasted checked wool jacket"
   },
   "P616S_179B_F0480_S_OOO": {
     "label": "long",
-    "refine": "img_long",
+    "refine": "coat_name",
     "ratio": 1.511,
     "method": "protrusion",
     "body": 337,
     "sleeve": 223,
     "height_cm": 100.0,
-    "name": "Double-breasted double cashwool coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Double-breasted double cashwool coat"
   },
   "P617S_179B_F0480_S_OOO": {
     "label": "long",
@@ -1360,10 +1047,7 @@
     "body": 324,
     "sleeve": 293,
     "height_cm": null,
-    "name": "Double-breasted double cashwool coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Double-breasted double cashwool coat"
   },
   "P621T_1XMY_F0008_S_OOO": {
     "label": "long",
@@ -1373,23 +1057,17 @@
     "body": 311,
     "sleeve": 304,
     "height_cm": 120.0,
-    "name": "Single-breasted light wool coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted light wool coat"
   },
   "P634T_19BL_F0334_S_OOO": {
     "label": "long",
-    "refine": "img_long",
+    "refine": "coat_name",
     "ratio": 1.19,
     "method": "protrusion",
     "body": 344,
     "sleeve": 289,
     "height_cm": 105.0,
-    "name": "Single-breasted double satin coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted double satin coat"
   },
   "P649TR_11H4_F0008_S_OOO": {
     "label": "long",
@@ -1399,23 +1077,17 @@
     "body": 323,
     "sleeve": 316,
     "height_cm": 110.0,
-    "name": "Single-breasted embroidered double wool coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted embroidered double wool coat"
   },
   "P650S_179B_F0480_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.031,
     "method": "outer",
     "body": 270,
     "sleeve": 262,
     "height_cm": 80.0,
-    "name": "Single-breasted double cashwool caban jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted double cashwool caban jacket"
   },
   "P650T_179B_F0002_S_OOO": {
     "label": "long",
@@ -1425,23 +1097,17 @@
     "body": 308,
     "sleeve": 312,
     "height_cm": null,
-    "name": "Single-breasted double cashwool coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted double cashwool coat"
   },
   "P651T_1ALK_F0192_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.082,
     "method": "outer",
     "body": 238,
     "sleeve": 220,
     "height_cm": 80.0,
-    "name": "Reversible double cashwool and Re-Nylon caban jacket",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Reversible double cashwool and Re-Nylon caban jacket"
   },
   "P656T_11FT_F0480_S_OOO": {
     "label": "long",
@@ -1451,10 +1117,7 @@
     "body": 316,
     "sleeve": 305,
     "height_cm": null,
-    "name": "Single-breasted cashmere and wool coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted cashmere and wool coat"
   },
   "P663S_179B_F0002_S_OOO": {
     "label": "long",
@@ -1464,10 +1127,7 @@
     "body": 312,
     "sleeve": 323,
     "height_cm": 115.0,
-    "name": "Single-breasted double cashwool coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted double cashwool coat"
   },
   "P669T_C61_F0008_S_OOO": {
     "label": "long",
@@ -1477,49 +1137,37 @@
     "body": 307,
     "sleeve": 315,
     "height_cm": 102.0,
-    "name": "Single-breasted crinoline coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted crinoline coat"
   },
   "P680TR_6649_F0I05_S_OOO": {
     "label": "long",
-    "refine": "img_long",
+    "refine": "coat_name",
     "ratio": 1.55,
     "method": "protrusion",
     "body": 324,
     "sleeve": 209,
     "height_cm": 110.0,
-    "name": "Single-breasted antiqued twill and houndstooth check coat",
-    "prev_subs": [
-      "jackets"
-    ]
+    "name": "Single-breasted antiqued twill and houndstooth check coat"
   },
   "P8001_179B_F0008_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.034,
     "method": "outer",
     "body": 270,
     "sleeve": 261,
     "height_cm": 70.0,
-    "name": "Double cashwool jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Double cashwool jacket"
   },
   "P8002_13NH_F0031_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 1.007,
     "method": "outer",
     "body": 273,
     "sleeve": 271,
     "height_cm": 70.0,
-    "name": "Garment-dyed kid mohair jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Garment-dyed kid mohair jacket"
   },
   "P8010_179C_F0008_S_OOO": {
     "label": "short",
@@ -1529,23 +1177,17 @@
     "body": 219,
     "sleeve": 227,
     "height_cm": 64.0,
-    "name": "Double cashmere and wool bomber jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Double cashmere and wool bomber jacket"
   },
   "P8023G_182Z_F0008_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.932,
     "method": "outer",
     "body": 274,
     "sleeve": 294,
     "height_cm": 54.0,
-    "name": "Cloth and cotton fleece jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Cloth and cotton fleece jacket"
   },
   "P8026R_165_F0040_S_OOO": {
     "label": "short",
@@ -1555,75 +1197,57 @@
     "body": 223,
     "sleeve": 233,
     "height_cm": 65.0,
-    "name": "Camel-hair blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Camel-hair blouson jacket"
   },
   "P8029_17N1_F0192_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.861,
     "method": "outer",
     "body": 216,
     "sleeve": 251,
     "height_cm": 68.0,
-    "name": "Hooded rush stitch jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Hooded rush stitch jacket"
   },
   "P8029_18VA_F0005_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.779,
     "method": "outer",
     "body": 197,
     "sleeve": 253,
     "height_cm": 68.0,
-    "name": "Prince of Wales checked wool jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Prince of Wales checked wool jacket"
   },
   "P8029_18VA_F063H_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.752,
     "method": "outer",
     "body": 197,
     "sleeve": 262,
     "height_cm": 68.0,
-    "name": "Prince of Wales checked wool jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Prince of Wales checked wool jacket"
   },
   "P8031_18X7_F0008_S_OOO": {
     "label": "short",
-    "refine": "jacket_near",
+    "refine": "name_jacket",
     "ratio": 0.927,
     "method": "outer",
     "body": 217,
     "sleeve": 234,
     "height_cm": 68.0,
-    "name": "Silk jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Silk jacket"
   },
   "P8044_187P_F0403_S_OOO": {
     "label": "short",
-    "refine": "img_short",
+    "refine": "name_jacket",
     "ratio": 0.827,
     "method": "outer",
     "body": 196,
     "sleeve": 237,
     "height_cm": 60.0,
-    "name": "Poplin jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Poplin jacket"
   },
   "P8048_184A_F0011_S_OOO": {
     "label": "short",
@@ -1633,10 +1257,7 @@
     "body": 183,
     "sleeve": 261,
     "height_cm": 58.0,
-    "name": "Gabardine blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Gabardine blouson jacket"
   },
   "P8050_1526_F0009_S_OOO": {
     "label": "short",
@@ -1646,10 +1267,7 @@
     "body": 231,
     "sleeve": 229,
     "height_cm": 72.0,
-    "name": "Silk faille blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Silk faille blouson jacket"
   },
   "P8050_17LK_F0050_S_OOO": {
     "label": "short",
@@ -1659,10 +1277,7 @@
     "body": 233,
     "sleeve": 232,
     "height_cm": 72.0,
-    "name": "Mohair wool blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Mohair wool blouson jacket"
   },
   "P8058_19ZL_F0241_S_OOO": {
     "label": "short",
@@ -1672,10 +1287,7 @@
     "body": 208,
     "sleeve": 209,
     "height_cm": 70.0,
-    "name": "Old silk bomber jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Old silk bomber jacket"
   },
   "P8059E_192A_F0036_S_OOO": {
     "label": "short",
@@ -1685,10 +1297,7 @@
     "body": 221,
     "sleeve": 238,
     "height_cm": 72.0,
-    "name": "Embroidered garment-dyed old gabardine blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Embroidered garment-dyed old gabardine blouson jacket"
   },
   "P8063C_1526_F0036_S_OOO": {
     "label": "short",
@@ -1698,10 +1307,7 @@
     "body": 106,
     "sleeve": 231,
     "height_cm": 45.0,
-    "name": "Faille blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Faille blouson jacket"
   },
   "P8063E_6130_F0005_S_OOO": {
     "label": "short",
@@ -1711,10 +1317,7 @@
     "body": 218,
     "sleeve": 211,
     "height_cm": 62.0,
-    "name": "Houndstooth wool blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Houndstooth wool blouson jacket"
   },
   "P8064_1ACZ_F0308_S_OOO": {
     "label": "short",
@@ -1724,10 +1327,7 @@
     "body": 228,
     "sleeve": 225,
     "height_cm": null,
-    "name": "Re-Wool blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Wool blouson jacket"
   },
   "P8066_6555_F0008_S_OOO": {
     "label": "short",
@@ -1737,10 +1337,7 @@
     "body": 197,
     "sleeve": 180,
     "height_cm": 72.0,
-    "name": "Re-Wool blouson",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Re-Wool blouson"
   },
   "P8103_6625_F0TA6_S_OOO": {
     "label": "short",
@@ -1750,9 +1347,6 @@
     "body": 211,
     "sleeve": 243,
     "height_cm": 65.0,
-    "name": "Bonded devoré hopsack blouson jacket",
-    "prev_subs": [
-      "outerwear"
-    ]
+    "name": "Bonded devoré hopsack blouson jacket"
   }
 }

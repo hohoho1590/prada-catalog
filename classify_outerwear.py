@@ -13,15 +13,15 @@ Method (documented for the catalog):
    - Else use sleeve protrusion outside an estimated body column (long coats
      where hem extends below cuffs and body flares).
 6. body_len = hem - shoulder; sleeve_len = cuff - shoulder.
-7. Decision:
-   - Strong image long if body_len/sleeve_len >= 1.15 (unless height < 65 cm
-     on a non-coat name).
-   - Strong image short if ratio <= 0.92.
-   - Near-equal (user rule: 接近或一樣 → 短外套) defaults to short, except
-     raincoat/trench/parka/overcoat names or "coat" with height >= 85 cm
-     or height >= 95 cm.
+7. Decision (bias toward 短外套 unless clear long-coat signals):
+   - Name cues jacket / blouson / bomber / cropped / trucker / caban / blazer
+     → short (even when packshot body > sleeve).
+   - trench / overcoat / duster / car coat, or "coat" without jacket → long.
+   - raincoat / parka → long only if height >= 95 cm or ratio >= 1.30;
+     otherwise short (user: body taller than sleeves can still be short).
+   - Image alone: ratio >= 1.35 → long; <= 0.92 → short; else short
+     (do not treat modest body>sleeve as long).
    - Vest / capelet / sleeveless → short.
-   - cropped / bomber / blouson / trucker → short.
 
 Writes outerwear_length_map.json: {productCode: "short"|"long"}
 and outerwear_img_class.json with debug fields.
@@ -161,49 +161,58 @@ def analyze(path: Path):
 
 
 def decide(name, height_cm, img):
+    """Bias toward short unless clear long-coat name or strong long silhouette."""
     n = (name or "").lower()
     ratio = img["ratio"] if img else None
     if any(w in n for w in ("vest", "capelet", "sleeveless", "gilet")):
         return "short", "sleeveless"
     if any(w in n for w in ("cropped", "crop ", "bomber", "blouson", "trucker", "bolero")):
         return "short", "name_short"
-    long_name = any(w in n for w in ("raincoat", "trench", "overcoat", "duster", "car coat", "carcoat"))
-    if "parka" in n and "crop" not in n:
-        long_name = True
-    if long_name:
+    # Jacket-family names are short even when packshot body > sleeve.
+    if "jacket" in n or "caban" in n or "blazer" in n:
+        return "short", "name_jacket"
+    if any(w in n for w in ("trench", "overcoat", "duster", "car coat", "carcoat")):
         return "long", "name_long"
-    is_coat = ("coat" in n) and ("jacket" not in n) and ("petticoat" not in n)
-    is_jacket = "jacket" in n or "caban" in n or "blazer" in n
-
-    if img:
-        if ratio >= 1.15:
-            if height_cm is not None and height_cm < 65 and not is_coat:
-                return "short", "img_override_h"
+    # "raincoat" contains "coat" — handle rain/parka before generic coat.
+    is_rain_or_parka = ("raincoat" in n) or ("parka" in n and "crop" not in n)
+    if is_rain_or_parka:
+        if height_cm is not None and height_cm >= 95:
+            return "long", "rain_tall"
+        if ratio is not None and ratio >= 1.30:
+            return "long", "rain_img_long"
+        return "short", "rain_default_short"
+    is_coat = (
+        ("coat" in n)
+        and ("jacket" not in n)
+        and ("petticoat" not in n)
+        and ("raincoat" not in n)
+    )
+    if is_coat:
+        return "long", "coat_name"
+    if img and ratio is not None:
+        if ratio >= 1.35:
             return "long", "img_long"
         if ratio <= 0.92:
             return "short", "img_short"
-        if is_coat and (height_cm is None or height_cm >= 85 or ratio >= 1.0):
-            return "long", "coat_name"
-        if height_cm is not None and height_cm >= 95:
+        if height_cm is not None and height_cm >= 100:
             return "long", "height_long"
-        if is_jacket:
-            return "short", "jacket_near"
-        return "short", "near_eq"
-    if is_coat and (height_cm is None or height_cm >= 80):
-        return "long", "noimg_coat"
-    if height_cm is not None and height_cm >= 95:
+        return "short", "near_eq_short"
+    if height_cm is not None and height_cm >= 100:
         return "long", "noimg_h"
     return "short", "noimg_default"
 
 
 def candidate_products(products):
+    """Include remapped short/long_outerwear so re-runs after build still work."""
     out = []
     for p in products:
         if p.get("department") != "rtw":
             continue
         subs = set(p.get("subcats") or [])
         name = (p.get("name_en") or "").lower()
-        if subs & {"outerwear", "jackets"}:
+        if p.get("outerwear_length") in ("short", "long"):
+            out.append(p)
+        elif subs & {"outerwear", "jackets", "short_outerwear", "long_outerwear"}:
             out.append(p)
         elif "leather_clothing" in subs and any(w in name for w in GARMENT):
             out.append(p)

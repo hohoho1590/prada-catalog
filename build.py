@@ -283,9 +283,9 @@ def is_outerwear_garment(name_en, subcats):
 def classify_outerwear_length(name_en, subcats, height_cm=None, code=None, ow_map=None):
     """
     long / short for outerwear-like garments; None if not outerwear.
-    Prefer image-based map (body length vs sleeve length on packshot).
-    Fallback: ProductHeight vs ~75cm sleeve, then name heuristics.
-    User rule: body longer than sleeves → long; near-equal or shorter → short.
+    Prefer image-based map from classify_outerwear.py (+ manual overrides).
+    Fallback bias: jacket-family → short; coat/trench → long; raincoat/parka
+    long only if height clearly tall; do not treat modest body>sleeve as long.
     """
     if not is_outerwear_garment(name_en, subcats):
         return None
@@ -294,18 +294,20 @@ def classify_outerwear_length(name_en, subcats, height_cm=None, code=None, ow_ma
     name = (name_en or "").lower()
     if re.search(r"\bvest\b", name) or "capelet" in name or "sleeveless" in name:
         return "short"
-    if any(w in name for w in ("cropped", "crop ", "bomber", "blouson", "trucker")):
-        return "short"
-    if any(w in name for w in ("raincoat", "trench", "overcoat", "parka", "duster")):
-        return "long"
-    if re.search(r"\bcoat\b", name) and "jacket" not in name:
-        return "long"
-    if height_cm is not None and height_cm > 0:
-        if height_cm > EST_SLEEVE_CM * (1.0 + SLEEVE_TOLERANCE):
-            return "long"
+    if any(w in name for w in ("cropped", "crop ", "bomber", "blouson", "trucker", "bolero")):
         return "short"
     if "jacket" in name or "caban" in name or "blazer" in name:
         return "short"
+    if any(w in name for w in ("trench", "overcoat", "duster", "car coat", "carcoat")):
+        return "long"
+    if ("raincoat" in name) or ("parka" in name and "crop" not in name):
+        if height_cm is not None and height_cm >= 95:
+            return "long"
+        return "short"
+    if re.search(r"\bcoat\b", name) and "jacket" not in name and "raincoat" not in name:
+        return "long"
+    if height_cm is not None and height_cm >= 100:
+        return "long"
     return "short"
 
 
@@ -479,7 +481,7 @@ def main():
         "source": {
             "bags": "https://www.prada.com/hk/en/womens/bags/c/10062HK",
             "rtw": "https://www.prada.com/hk/en/womens/ready-to-wear/c/10048HK",
-            "ui": "short-long-outerwear-v9",
+            "ui": "short-long-outerwear-v10",
         },
         "fetched": date.today().isoformat(),
         "count": len(out),

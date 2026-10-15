@@ -1,5 +1,10 @@
 {
-  "_comment": "Manual short/long corrections. Applied after image/name classification so rebuilds keep user fixes. Values: short | long.",
+  "_comment": "Manual short/long corrections. Applied after image/name classification so rebuilds keep user fixes. Values: short | long. User examples (2026-10-15): jackets/parkas/rain jackets that stay 短外套 even when packshot body ≥ sleeve.",
   "29S427_199Y_F0002_S_OOO": "short",
-  "292252_1WQ9_F0E18_S_WMO": "short"
+  "292252_1WQ9_F0E18_S_WMO": "short",
+  "292391_1WQ8_F0002_S_OOO": "short",
+  "292348_1WQ8_F0002_S_OOO": "short",
+  "29X966_1WQ8_F0002_S_OOO": "short",
+  "292214_178Y_F0002_S_OOO": "short",
+  "292214_18H4_F0008_S_OOO": "short"
 }
