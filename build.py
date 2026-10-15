@@ -248,48 +248,78 @@ def classify_sleeve(name_en):
     return "unknown"
 
 
-def classify_outerwear_length(name_en, subcats, height_cm=None):
-    """
-    long / short / unknown for outerwear-like garments; None if not outerwear.
-    Rule: body longer than sleeve (>10%) → long; body ≈ sleeve (within 10%) or shorter → short.
-    Prefer ProductHeight vs estimated sleeve; else name heuristics.
-    """
+def load_outerwear_map():
+    """code -> short|long from classify_outerwear.py (image body vs sleeve)."""
+    p = Path("outerwear_length_map.json")
+    if p.exists():
+        return json.load(open(p))
+    return {}
+
+
+def is_outerwear_garment(name_en, subcats):
     subs = set(subcats or [])
-    if not (subs & OUTERWEAR_SUBS):
-        return None
     name = (name_en or "").lower()
-    if not any(w in name for w in OUTERWEAR_GARMENT):
-        # leather skirts / shirts tagged under leather_clothing
+    if subs & {"outerwear", "jackets"}:
+        return True
+    if "leather_clothing" in subs and any(w in name for w in OUTERWEAR_GARMENT):
+        return True
+    return False
+
+
+def classify_outerwear_length(name_en, subcats, height_cm=None, code=None, ow_map=None):
+    """
+    long / short for outerwear-like garments; None if not outerwear.
+    Prefer image-based map (body length vs sleeve length on packshot).
+    Fallback: ProductHeight vs ~75cm sleeve, then name heuristics.
+    User rule: body longer than sleeves → long; near-equal or shorter → short.
+    """
+    if not is_outerwear_garment(name_en, subcats):
         return None
-
-    # Dimension rule (body vs estimated sleeve)
-    if height_cm is not None and height_cm > 0:
-        # Sleeveless outerwear (vests): treat as short — no sleeve to compare
-        if re.search(r"\bvest\b", name) or "capelet" in name:
-            return "short"
-        sleeve = EST_SLEEVE_CM
-        if height_cm > sleeve * (1.0 + SLEEVE_TOLERANCE):
-            return "long"
+    if ow_map and code and code in ow_map:
+        return ow_map[code]
+    name = (name_en or "").lower()
+    if re.search(r"\bvest\b", name) or "capelet" in name or "sleeveless" in name:
         return "short"
-
-    # Name heuristics fallback
-    if "cropped" in name or "crop " in name or name.startswith("crop"):
-        return "short"
-    if re.search(r"\bvest\b", name) or "capelet" in name:
-        return "short"
-    if any(w in name for w in ("bomber", "blouson", "trucker", "blazer")):
+    if any(w in name for w in ("cropped", "crop ", "bomber", "blouson", "trucker")):
         return "short"
     if any(w in name for w in ("raincoat", "trench", "overcoat", "parka", "duster")):
         return "long"
     if re.search(r"\bcoat\b", name) and "jacket" not in name:
         return "long"
-    if re.search(r"\bcape\b", name):
-        return "long"
-    if "caban" in name:
+    if height_cm is not None and height_cm > 0:
+        if height_cm > EST_SLEEVE_CM * (1.0 + SLEEVE_TOLERANCE):
+            return "long"
         return "short"
-    if "jacket" in name:
+    if "jacket" in name or "caban" in name or "blazer" in name:
         return "short"
-    return "unknown"
+    return "short"
+
+
+def apply_outerwear_subcats(subs, sub_zh, ow_len, name_en):
+    """
+    Replace API outerwear/jackets with top-level 短外套/長外套.
+    Leather jackets/coats leave leather_clothing so they live under short/long only.
+    """
+    if ow_len not in ("short", "long"):
+        return subs, sub_zh
+    key = "short_outerwear" if ow_len == "short" else "long_outerwear"
+    zh = "短外套" if ow_len == "short" else "長外套"
+    new_ids = []
+    new_zh = []
+    for sid, sz in zip(subs, sub_zh):
+        if sid in ("outerwear", "jackets"):
+            continue
+        if sid == "leather_clothing" and any(
+            w in (name_en or "").lower() for w in OUTERWEAR_GARMENT
+        ):
+            continue
+        if sid not in new_ids:
+            new_ids.append(sid)
+            new_zh.append(sz)
+    if key not in new_ids:
+        new_ids.insert(0, key)
+        new_zh.insert(0, zh)
+    return new_ids, new_zh
 
 
 def classify_bottom_length(name_en, subcats, height_cm=None, kind="trousers"):
@@ -330,7 +360,7 @@ def classify_bottom_length(name_en, subcats, height_cm=None, kind="trousers"):
     return None
 
 
-def build_product(h, department, sub_map, default_sub_zh):
+def build_product(h, department, sub_map, default_sub_zh, ow_map=None):
 
     cats = h.get("Categories") or []
     subs = [sub_map[c] for c in sub_map if c in cats]
@@ -356,15 +386,22 @@ def build_product(h, department, sub_map, default_sub_zh):
     else:
         cat, lt = classify_rtw(mat_en, name_en, material_group, raw_for_class)
         subcat_ids = [s[0] for s in subs]
-        ow_len = classify_outerwear_length(name_en, subcat_ids, height_cm)
+        code = h["objectID"]
+        ow_len = classify_outerwear_length(name_en, subcat_ids, height_cm, code, ow_map)
         # trousers / skirts short vs long
         if set(subcat_ids) & {"trousers", "denim"}:
             bottom_len = classify_bottom_length(name_en, subcat_ids, height_cm, "trousers")
         if bottom_len is None and "skirts" in subcat_ids:
             bottom_len = classify_bottom_length(name_en, subcat_ids, height_cm, "skirts")
+        sub_ids = [s[0] for s in subs]
+        sub_zh_list = [s[1] for s in subs] or [default_sub_zh]
+        sub_ids, sub_zh_list = apply_outerwear_subcats(sub_ids, sub_zh_list, ow_len, name_en)
     imgs = h.get("Images") or {}
     plp = imgs.get("PLPBKG") or ""
     image = (plp + "/_jcr_content/renditions/cq5dam.web.hebebed.800.800.jpg") if plp else ""
+    if department == "bags":
+        sub_ids = [s[0] for s in subs]
+        sub_zh_list = [s[1] for s in subs] or [default_sub_zh]
     return dict(
         code=h["objectID"],
         model=(h.get("Model") or {}).get("Code") if isinstance(h.get("Model"), dict) else h.get("Model"),
@@ -387,8 +424,8 @@ def build_product(h, department, sub_map, default_sub_zh):
         height_cm=height_cm,
         size=g(h, "BagDimension", "zh_HK"),
         dimensions=dim(h),
-        subcats=[s[0] for s in subs],
-        subcat_zh=[s[1] for s in subs] or [default_sub_zh],
+        subcats=sub_ids,
+        subcat_zh=sub_zh_list,
         line=g(h, "ProductType", "en_GB"),
         other_colors=[
             o["Code"] for o in h.get("OtherColors") or []
@@ -412,8 +449,9 @@ def main():
     bags_raw = load_raw("raw_bags.json") if Path("raw_bags.json").exists() else load_raw("raw.json")
     rtw_raw = load_raw("raw_rtw.json")
 
+    ow_map = load_outerwear_map()
     bags = [build_product(h, "bags", SUB_BAGS, "其他（小袋／吊飾等）") for h in bags_raw["hits"]]
-    rtw = [build_product(h, "rtw", SUB_RTW, "其他成衣") for h in rtw_raw["hits"]]
+    rtw = [build_product(h, "rtw", SUB_RTW, "其他成衣", ow_map) for h in rtw_raw["hits"]]
 
     seen = set()
     out = []
@@ -427,7 +465,7 @@ def main():
         "source": {
             "bags": "https://www.prada.com/hk/en/womens/bags/c/10062HK",
             "rtw": "https://www.prada.com/hk/en/womens/ready-to-wear/c/10048HK",
-            "ui": "sleeve-bottom-ow-v7",
+            "ui": "short-long-outerwear-v8",
         },
         "fetched": date.today().isoformat(),
         "count": len(out),
@@ -438,6 +476,7 @@ def main():
     print("total", len(out), "bags", len(bags), "rtw", len(rtw))
     print("bags subcats", C.Counter(s for o in bags for s in o["subcat_zh"]))
     print("rtw subcats", C.Counter(s for o in rtw for s in o["subcat_zh"]))
+    print("rtw subcat ids", C.Counter(s for o in rtw for s in o["subcats"]))
     print("bags material", C.Counter(o["primary_material_category"] for o in bags))
     print("rtw material", C.Counter(o["primary_material_category"] for o in rtw))
     print("bags leather", C.Counter(o["leather_type"] for o in bags if o["primary_material_category"] == "leather"))
