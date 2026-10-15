@@ -74,6 +74,24 @@ def material_display(h):
     return raw
 
 
+def leather_subtype(blob):
+    """Shared leather subtype from material/name blob (lowercased)."""
+    if "vernice" in blob or "varnish" in blob or "patent" in blob:
+        return "vernice"
+    if "saffiano" in blob:
+        return "saffiano"
+    if "nappa" in blob:
+        return "nappa"
+    if (
+        "suede" in blob
+        or "nubuck" in blob
+        or "nabuk" in blob
+        or "scamosciato" in blob
+    ):
+        return "suede"
+    return "other_leather"
+
+
 def classify_bags(material, name_en, material_group, raw=""):
     """Bags: 皮革 / 尼龍 / 其他 (+ leather subtypes)."""
     mat = material or ""
@@ -111,19 +129,10 @@ def classify_bags(material, name_en, material_group, raw=""):
         or any(x in blob for x in LEATHER_MARKERS)
     )
     if is_leather:
-        if "vernice" in blob or "varnish" in blob or "patent" in blob:
-            lt = "vernice"
-        elif "saffiano" in blob:
-            lt = "saffiano"
-        elif "nappa" in blob:
-            lt = "nappa"
-        elif "suede" in blob or "nubuck" in blob:
-            lt = "suede"
-        else:
-            lt = "other_leather"
-        return "leather", lt
+        return "leather", leather_subtype(blob)
 
     return "other", None
+
 
 
 def classify_rtw(material, name_en, material_group, raw=""):
@@ -134,6 +143,7 @@ def classify_rtw(material, name_en, material_group, raw=""):
       nylon          尼龍
       cotton_linen   棉／麻（含牛仔）
       silk_other     絲／其他（絲、人造絲等）
+    Leather subtypes only set when category is leather (nappa/suede/…).
     """
     mat = material or ""
     name = name_en or ""
@@ -143,7 +153,7 @@ def classify_rtw(material, name_en, material_group, raw=""):
 
     # Prefer MaterialGroup when present (cleanest signal on RTW)
     if group in ("皮革", "綿羊皮") or group_l in ("leather", "sheepskin"):
-        return "leather", None
+        return "leather", leather_subtype(blob)
     if group in ("羊毛", "羊絨") or group_l in ("wool", "cashmere"):
         return "wool_cashmere", None
     if group == "尼龍" or group_l == "nylon":
@@ -157,7 +167,7 @@ def classify_rtw(material, name_en, material_group, raw=""):
     if any(x in blob for x in ("re-nylon", "re nylon", "nylon", "vela", "tessuto")):
         return "nylon", None
     if any(x in blob for x in LEATHER_MARKERS) or "shearling" in blob or "montone" in blob:
-        return "leather", None
+        return "leather", leather_subtype(blob)
     if any(x in blob for x in ("cashmere", "wool", "mohair", "alpaca", "camel", "tweed", "cashwool", "lana", "re-wool")):
         return "wool_cashmere", None
     if any(x in blob for x in ("cotton", "denim", "linen", "chino", "canvas", "poplin", "popeline", "piquet", "chambray", "gabardine")):
