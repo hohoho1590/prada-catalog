@@ -1,5 +1,5 @@
 <!doctype html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prada 女裝手袋目錄</title><link rel="stylesheet" href="style.css"></head><body>
+<title>Prada 女裝手袋目錄</title><link rel="stylesheet" href="style.css?v=2"></head><body>
 <header><h1>PRADA 女裝手袋目錄</h1>
 <div class="tabs" id="tabs"></div>
 <div class="filters">
@@ -21,47 +21,95 @@
 const TABS=[['','全部'],['shoulder','肩背包'],['mini','迷你手袋'],['tote','托特包'],['top','手挽包'],['backpack','背囊'],['briefcase','公事包']];
 const MAT_CATS=[['','全部物料'],['leather','皮革'],['nylon','尼龍'],['other','其他']];
 const LEATHER_TYPES=[['saffiano','Saffiano'],['nappa','Nappa'],['vernice','Vernice'],['suede','Suede'],['other_leather','其他皮革']];
+const DATA_VER='20261015b';
 let P=[],tab='',matCat='',leatherType='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
 const $=id=>document.getElementById(id),fmt=n=>'HK$ '+n.toLocaleString('en');
 const esc=s=>(s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
-function matLabel(p){
-  if(p.primary_material_category==='nylon') return '尼龍';
-  if(p.primary_material_category==='other') return '其他';
-  const m={saffiano:'Saffiano',nappa:'Nappa',vernice:'Vernice',suede:'Suede',other_leather:'皮革'};
-  return m[p.leather_type]||'皮革';
+function classifyMaterial(p){
+  const mat=(p.material||''), name=(p.name_en||''), group=(p.material_group||'');
+  const blob=(mat+' '+name+' '+group).toLowerCase(), matL=mat.toLowerCase().trim();
+  if(blob.includes('re-nylon')||blob.includes('re nylon')||blob.includes('nylon')||matL==='vela'||matL.startsWith('vela ')||matL.startsWith('tessuto'))
+    return {cat:'nylon',lt:null};
+  const otherFab=['linen','denim','corduroy','satin','velvet','silk','canvas','cotton','raffia','straw','duchesse','weave','grass','wicker'];
+  if(otherFab.some(x=>blob.includes(x))||group==='面料'||group==='面料／皮革') return {cat:'other',lt:null};
+  const leatherMark=['leather','calf','nappa','saffiano','vernice','suede','patent','cuir','vitello','vit.','daino','crocodile','nubuck','brushed','cuoio','皮革'];
+  if(group==='皮革'||group==='進口皮革'||leatherMark.some(x=>blob.includes(x))){
+    let lt='other_leather';
+    if(blob.includes('vernice')||blob.includes('varnish')||blob.includes('patent')) lt='vernice';
+    else if(blob.includes('saffiano')) lt='saffiano';
+    else if(blob.includes('nappa')) lt='nappa';
+    else if(blob.includes('suede')||blob.includes('nubuck')) lt='suede';
+    return {cat:'leather',lt};
+  }
+  return {cat:'other',lt:null};
 }
-fetch('data.json').then(r=>r.json()).then(d=>{P=d.products;
+function ensureMaterialFields(p){
+  if(p.primary_material_category) return p;
+  const {cat,lt}=classifyMaterial(p);
+  p.primary_material_category=cat;
+  p.leather_type=lt;
+  return p;
+}
+function matCatOf(p){return p.primary_material_category||''}
+function leatherOf(p){return p.leather_type||''}
+function matLabel(p){
+  if(matCatOf(p)==='nylon') return '尼龍';
+  if(matCatOf(p)==='other') return '其他';
+  const m={saffiano:'Saffiano',nappa:'Nappa',vernice:'Vernice',suede:'Suede',other_leather:'皮革'};
+  return m[leatherOf(p)]||'皮革';
+}
+fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return r.json()}).then(d=>{
+ P=(d.products||[]).map(ensureMaterialFields);
  const fill=(id,vals)=>[...new Set(vals)].filter(Boolean).sort().forEach(v=>$(id).add(new Option(v,v)));
  fill('line',P.map(p=>p.line));fill('color',P.map(p=>p.color_group));
  $('tabs').innerHTML=TABS.map(([k,l])=>`<button type="button" data-k="${k}">${l}</button>`).join('');
- $('tabs').onclick=e=>{if(e.target.dataset.k!==undefined){tab=e.target.dataset.k;render()}};
+ $('tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;tab=b.getAttribute('data-k')||'';render()});
  $('matCat').innerHTML=MAT_CATS.map(([k,l])=>`<button type="button" data-c="${k}">${l}</button>`).join('');
- $('matCat').onclick=e=>{const c=e.target.dataset.c;if(c===undefined)return;matCat=c;if(matCat!=='leather')leatherType='';render()};
+ $('matCat').addEventListener('click',e=>{
+   const b=e.target.closest('button[data-c]');if(!b)return;
+   matCat=b.getAttribute('data-c')||'';
+   if(matCat!=='leather') leatherType='';
+   render();
+ });
  $('leatherType').innerHTML=LEATHER_TYPES.map(([k,l])=>`<button type="button" data-t="${k}">${l}</button>`).join('');
- $('leatherType').onclick=e=>{const t=e.target.dataset.t;if(t===undefined)return;leatherType=leatherType===t?'':t;render()};
- ['q','line','color','price','sort'].forEach(i=>$(i).oninput=render);render();});
+ $('leatherType').addEventListener('click',e=>{
+   const b=e.target.closest('button[data-t]');if(!b)return;
+   const t=b.getAttribute('data-t')||'';
+   leatherType=leatherType===t?'':t;
+   render();
+ });
+ ['q','line','color','price','sort'].forEach(i=>$(i).addEventListener('input',render));
+ render();
+}).catch(()=>{$('count').textContent='載入失敗，請重新整理';});
 function render(){
- [...$('tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.k===tab));
- [...$('matCat').children].forEach(b=>b.classList.toggle('on',b.dataset.c===matCat));
+ [...$('tabs').children].forEach(b=>b.classList.toggle('on',(b.getAttribute('data-k')||'')===tab));
+ [...$('matCat').children].forEach(b=>b.classList.toggle('on',(b.getAttribute('data-c')||'')===matCat));
  const showLeather=matCat==='leather';
  $('leatherType').hidden=!showLeather;
- if(showLeather)[...$('leatherType').children].forEach(b=>b.classList.toggle('on',b.dataset.t===leatherType));
- const q=$('q').value.trim().toLowerCase(),[lo,hi]=($('price').value||'0-1e9').split('-').map(Number);
- let r=P.filter(p=>(!tab||p.subcats.includes(tab))&&(!$('line').value||p.line===$('line').value)&&(!$('color').value||p.color_group===$('color').value)
-  &&(!matCat||p.primary_material_category===matCat)
-  &&(!leatherType||(p.primary_material_category==='leather'&&p.leather_type===leatherType))
-  &&p.price>=lo&&p.price<hi
-  &&(!q||(p.name_en+' '+p.name_zh+' '+p.code+' '+p.color_zh+' '+p.color_en+(p.material||'')).toLowerCase().includes(q)));
+ if(showLeather)[...$('leatherType').children].forEach(b=>b.classList.toggle('on',(b.getAttribute('data-t')||'')===leatherType));
+ const q=$('q').value.trim().toLowerCase(),[lo,hi]=($('price').value||'0-9999999').split('-').map(Number);
+ let r=P.filter(p=>{
+  if(tab && !(p.subcats||[]).includes(tab)) return false;
+  if($('line').value && p.line!==$('line').value) return false;
+  if($('color').value && p.color_group!==$('color').value) return false;
+  if(matCat && matCatOf(p)!==matCat) return false;
+  if(leatherType && !(matCatOf(p)==='leather' && leatherOf(p)===leatherType)) return false;
+  if(!(p.price>=lo && p.price<hi)) return false;
+  if(q && !(p.name_en+' '+p.name_zh+' '+p.code+' '+p.color_zh+' '+p.color_en+(p.material||'')).toLowerCase().includes(q)) return false;
+  return true;
+ });
  if($('sort').value=='pa')r.sort((a,b)=>a.price-b.price);if($('sort').value=='pd')r.sort((a,b)=>b.price-a.price);
- $('count').textContent=`共 ${r.length} 款`;
- $('grid').innerHTML=r.map(p=>`<div class="card${sel.has(p.code)?' sel':''}" data-c="${p.code}">
+ $('count').textContent=r.length?`共 ${r.length} 款`:`呢個篩選冇貨品（0 款）`;
+ $('grid').innerHTML=r.length?r.map(p=>`<div class="card${sel.has(p.code)?' sel':''}" data-c="${p.code}">
  <label><input type="checkbox" ${sel.has(p.code)?'checked':''}> 揀</label>
  <a href="${p.url}" target="_blank"><img loading="lazy" src="${p.image}" alt=""></a><div class="b">
  <div class="nm">${esc(p.name_zh)}</div><div class="cd">${p.code}</div>
  <div><span class="dot" style="background:${p.color_hex}"></span>${esc(p.color_zh)}${p.size?' · '+esc(p.size):''}</div>
- <div style="color:#666">${esc(p.line||'')}${p.line||p.material||p.primary_material_category?' · ':''}${esc(p.material||matLabel(p))}</div>
- <div class="pr">${fmt(p.price)}</div></div></div>`).join('');upd();}
-$('grid').onchange=e=>{const c=e.target.closest('.card');if(!c)return;const k=c.dataset.c;e.target.checked?sel.add(k):sel.delete(k);c.classList.toggle('sel',e.target.checked);upd()};
+ <div style="color:#666">${esc(p.line||'')}${p.line||p.material||matCatOf(p)?' · ':''}${esc(p.material||matLabel(p))}</div>
+ <div class="pr">${fmt(p.price)}</div></div></div>`).join(''):'<div class="empty">試吓撳「全部物料」，或者改其他篩選。</div>';
+ upd();
+}
+$('grid').addEventListener('change',e=>{const c=e.target.closest('.card');if(!c)return;const k=c.dataset.c;e.target.checked?sel.add(k):sel.delete(k);c.classList.toggle('sel',e.target.checked);upd()});
 function upd(){$('n').textContent=`已揀 ${sel.size} 款`;localStorage.setItem('sel',JSON.stringify([...sel]))}
 $('clr').onclick=()=>{sel.clear();render()};
 $('share').onclick=async()=>{if(!sel.size)return alert('請先揀至少一款');

@@ -22,3 +22,5 @@ select,input{font-size:16px;padding:6px;border:1px solid #bbb;border-radius:6px;
 .chips button.on{background:#111;color:#fff}
 .leather-sub{margin-top:6px}.leather-sub button{border-color:#666;color:#333}
 .leather-sub button.on{background:#333;border-color:#333;color:#fff}
+
+[hidden]{display:none!important}.empty{padding:24px 12px;color:#666;font-size:15px;grid-column:1/-1}
