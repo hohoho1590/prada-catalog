@@ -1,8 +1,6 @@
 *{box-sizing:border-box}body{margin:0;font-family:-apple-system,"PingFang HK","Noto Sans TC",sans-serif;color:#111;background:#fafafa}
 header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #ddd;padding:10px 12px}
 h1{font-size:18px;margin:0 0 8px;letter-spacing:.05em}
-.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}.tabs button{flex:none;border:1px solid #111;background:#fff;border-radius:18px;padding:6px 12px;font-size:14px}
-.tabs button.on{background:#111;color:#fff}
 .filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-top:8px}
 select,input{font-size:16px;padding:6px;border:1px solid #bbb;border-radius:6px;width:100%;background:#fff}
 .count{font-size:13px;color:#666;margin:8px 12px}
@@ -16,15 +14,37 @@ select,input{font-size:16px;padding:6px;border:1px solid #bbb;border-radius:6px;
 .bar{position:fixed;bottom:0;left:0;right:0;background:#111;color:#fff;padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center}
 .bar button{font-size:15px;padding:9px 14px;border-radius:6px;border:0}.bar .go{background:#fff;color:#111;font-weight:600;margin-left:auto}
 .bar .clr{background:#444;color:#fff}a{color:inherit}
-.mat-block{margin-top:8px}.mat-label{font-size:13px;color:#555;margin-bottom:4px}
-.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;flex-wrap:wrap}
-.chips button{flex:none;border:1px solid #111;background:#fff;border-radius:18px;padding:6px 12px;font-size:14px}
-.chips button.on{background:#111;color:#fff}
-.leather-sub{margin-top:6px}.leather-sub button{border-color:#666;color:#333}
-.leather-sub button.on{background:#333;border-color:#333;color:#fff}
 
 [hidden]{display:none!important}.empty{padding:24px 12px;color:#666;font-size:15px;grid-column:1/-1}
 
 .dept{display:flex;gap:8px;margin-bottom:8px}
 .dept button{flex:1;border:1px solid #111;background:#fff;border-radius:8px;padding:10px 12px;font-size:15px;font-weight:600}
 .dept button.on{background:#111;color:#fff}
+
+/* Custom color dropdown — dots on the right */
+.color-dd{position:relative;width:100%}
+.color-dd-btn{
+  display:flex;align-items:center;gap:8px;
+  width:100%;font-size:16px;padding:6px 8px;border:1px solid #bbb;border-radius:6px;
+  background:#fff;text-align:left;cursor:pointer;min-height:38px;
+}
+.color-dd-btn::after{content:"";width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-top:6px solid #666;flex:none}
+.color-dd-label{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;text-align:left}
+.color-dd-btn .color-dot{flex:none}
+.color-dot{
+  display:inline-block;width:14px;height:14px;border-radius:50%;
+  border:1px solid rgba(0,0,0,.25);flex:none;
+}
+.color-dd-menu{
+  position:absolute;left:0;right:0;top:calc(100% + 2px);z-index:20;
+  background:#fff;border:1px solid #bbb;border-radius:8px;
+  max-height:280px;overflow-y:auto;box-shadow:0 8px 24px rgba(0,0,0,.12);
+}
+.color-opt{
+  display:flex;align-items:center;justify-content:space-between;gap:10px;
+  width:100%;padding:10px 12px;border:0;border-bottom:1px solid #f0f0f0;
+  background:#fff;font-size:16px;text-align:left;cursor:pointer;
+}
+.color-opt:last-child{border-bottom:0}
+.color-opt.on{background:#f5f5f5;font-weight:600}
+.color-opt:active{background:#eee}

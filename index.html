@@ -1,16 +1,23 @@
 <!doctype html><html lang="zh-Hant-HK"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Prada 女裝目錄</title><link rel="stylesheet" href="style.css?v=5"></head><body>
+<title>Prada 女裝目錄</title><link rel="stylesheet" href="style.css?v=6"></head><body>
 <header>
 <h1 id="pageTitle">PRADA 女裝目錄</h1>
 <div class="dept" id="dept">
   <button type="button" data-d="bags" class="on">手袋</button>
   <button type="button" data-d="rtw">成衣</button>
 </div>
-<div class="tabs" id="tabs"></div>
 <div class="filters">
 <input id="q" type="search" placeholder="搜尋名稱或貨號">
+<select id="cat"><option value="">全部總類</option></select>
 <select id="line"><option value="">全部系列</option></select>
-<select id="color"><option value="">全部顏色</option></select>
+<div class="color-dd" id="colorWrap">
+  <button type="button" class="color-dd-btn" id="colorBtn" aria-haspopup="listbox" aria-expanded="false">
+    <span class="color-dd-label" id="colorBtnLabel">全部顏色</span>
+    <span class="color-dot" id="colorBtnDot" hidden></span>
+  </button>
+  <div class="color-dd-menu" id="colorMenu" role="listbox" hidden></div>
+</div>
+<input type="hidden" id="color" value="">
 <select id="matCat"><option value="">全部物料</option></select>
 <select id="leatherType" hidden><option value="">全部皮革類型</option></select>
 <select id="owLen" hidden><option value="">全部長度</option></select>
@@ -22,15 +29,38 @@
 <div class="bar"><span id="n">已揀 0 款</span><button class="clr" id="clr">清除</button><button class="go" id="share">分享俾客人</button></div>
 <script>
 const TABS={
-  bags:[['','全部'],['shoulder','肩背包'],['mini','迷你手袋'],['tote','托特包'],['top','手挽包'],['backpack','背囊'],['briefcase','公事包']],
-  rtw:[['','全部'],['outerwear','外套'],['jackets','外套與大衣'],['knitwear','針織'],['dresses','連身裙'],['shirts','恤衫與上衣'],['tshirts','T恤與衛衣'],['trousers','長褲與短褲'],['skirts','半身裙'],['denim','牛仔'],['leather_clothing','皮革服裝'],['pajamas','睡衣與內衣'],['underwear_beach','內衣與沙灘裝'],['swimwear','泳裝']]
+  bags:[['','全部總類'],['shoulder','肩背包'],['mini','迷你手袋'],['tote','托特包'],['top','手挽包'],['backpack','背囊'],['briefcase','公事包']],
+  rtw:[['','全部總類'],['outerwear','外套'],['jackets','外套與大衣'],['knitwear','針織'],['dresses','連身裙'],['shirts','恤衫與上衣'],['tshirts','T恤與衛衣'],['trousers','長褲與短褲'],['skirts','半身裙'],['denim','牛仔'],['leather_clothing','皮革服裝'],['pajamas','睡衣與內衣'],['underwear_beach','內衣與沙灘裝'],['swimwear','泳裝']]
 };
 const MAT_BAGS=[['leather','皮革'],['nylon','尼龍'],['other','其他']];
 const MAT_RTW=[['leather','皮革'],['wool_cashmere','羊毛／羊絨'],['nylon','尼龍'],['cotton_linen','棉／麻'],['silk_other','絲／其他']];
 const LEATHER_TYPES=[['saffiano','Saffiano'],['nappa','Nappa'],['vernice','Vernice'],['suede','Suede'],['other_leather','其他皮革']];
 const OW_LENS=[['long','長外套'],['short','短外套']];
 const OW_TABS=new Set(['outerwear','jackets','leather_clothing']);
-const DATA_VER='20261015matdd';
+/* Preferred color order: 黑白紅橙黃綠藍紫金銀, then leftovers */
+const COLOR_ORDER=[
+  {group:'黑色',label:'黑',hex:'#111111'},
+  {group:'白色',label:'白',hex:'#ffffff'},
+  {group:'紅色',label:'紅',hex:'#c41230'},
+  {group:'橙色',label:'橙',hex:'#e25a17'},
+  {group:'黃色',label:'黃',hex:'#e6c200'},
+  {group:'綠色',label:'綠',hex:'#2d6a2d'},
+  {group:'藍色',label:'藍',hex:'#3c5b76'},
+  {group:'紫色',label:'紫',hex:'#6b3fa0'},
+  {group:'金色',label:'金',hex:'#c9a84c'},
+  {group:'銀色',label:'銀',hex:'#c0c0c0'},
+  {group:'金色／銀色',label:'金／銀',hex:'#c9a84c'}
+];
+const COLOR_REST=[
+  {group:'粉紅色',label:'粉紅',hex:'#e8a0b0'},
+  {group:'淺藍',label:'淺藍',hex:'#a8c8e0'},
+  {group:'灰色',label:'灰',hex:'#888888'},
+  {group:'啡色',label:'啡',hex:'#8b5a2b'},
+  {group:'無色',label:'無色',hex:'#edeae3'}
+];
+const COLOR_HEX={};
+[...COLOR_ORDER,...COLOR_REST].forEach(c=>{COLOR_HEX[c.group]=c.hex;});
+const DATA_VER='20261015catcolor';
 let ALL=[],P=[],dept='bags',tab='',matCat='',leatherType='',owLen='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
 const $=id=>document.getElementById(id),fmt=n=>'HK$ '+n.toLocaleString('en');
 const esc=s=>(s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
@@ -63,6 +93,59 @@ function countBy(list, keyFn){
   list.forEach(p=>{const k=keyFn(p); if(!k) return; c[k]=(c[k]||0)+1;});
   return c;
 }
+function colorMeta(group){
+  const known=[...COLOR_ORDER,...COLOR_REST].find(c=>c.group===group);
+  if(known) return known;
+  return {group,label:group,hex:COLOR_HEX[group]||'#cccccc'};
+}
+function orderedColorGroups(present){
+  const set=new Set(present);
+  const out=[];
+  COLOR_ORDER.forEach(c=>{ if(set.has(c.group)){ out.push(c); set.delete(c.group); }});
+  COLOR_REST.forEach(c=>{ if(set.has(c.group)){ out.push(c); set.delete(c.group); }});
+  [...set].sort().forEach(g=>out.push(colorMeta(g)));
+  return out;
+}
+function closeColorMenu(){
+  $('colorMenu').hidden=true;
+  $('colorBtn').setAttribute('aria-expanded','false');
+}
+function setColorValue(v){
+  $('color').value=v||'';
+  const btnLabel=$('colorBtnLabel'), btnDot=$('colorBtnDot');
+  if(!v){
+    btnLabel.textContent='全部顏色';
+    btnDot.hidden=true;
+  }else{
+    const m=colorMeta(v);
+    btnLabel.textContent=m.label;
+    btnDot.style.background=m.hex;
+    btnDot.hidden=false;
+  }
+  closeColorMenu();
+}
+function rebuildColorSelect(){
+  const present=[...new Set(P.map(p=>p.color_group).filter(Boolean))];
+  const ordered=orderedColorGroups(present);
+  const cur=$('color').value;
+  const menu=$('colorMenu');
+  let html=`<button type="button" role="option" data-v="" class="color-opt${!cur?' on':''}"><span>全部顏色</span></button>`;
+  ordered.forEach(c=>{
+    const on=cur===c.group?' on':'';
+    html+=`<button type="button" role="option" data-v="${esc(c.group)}" class="color-opt${on}"><span>${esc(c.label)}</span><span class="color-dot" style="background:${c.hex}"></span></button>`;
+  });
+  menu.innerHTML=html;
+  if(cur && !present.includes(cur)) setColorValue('');
+  else setColorValue($('color').value);
+}
+function rebuildCatSelect(){
+  const el=$('cat');
+  const prev=tab;
+  el.innerHTML='';
+  TABS[dept].forEach(([k,l])=>el.add(new Option(l,k)));
+  if(prev && ![...el.options].some(o=>o.value===prev)) tab='';
+  el.value=tab;
+}
 function rebuildMatSelects(){
   const defs=dept==='bags'?MAT_BAGS:MAT_RTW;
   const catCounts=countBy(P, matCatOf);
@@ -76,7 +159,6 @@ function rebuildMatSelects(){
   });
   if(prevMat && ![...matEl.options].some(o=>o.value===prevMat)) matCat='';
   matEl.value=matCat;
-
   rebuildLeatherSelect();
 }
 function rebuildLeatherSelect(){
@@ -92,7 +174,6 @@ function rebuildLeatherSelect(){
   });
   if(prev && ![...el.options].some(o=>o.value===prev)) leatherType='';
   el.value=leatherType;
-  // Only show when 皮革 is selected AND at least one subtype exists in this dept
   const hasTypes=el.options.length>1;
   el.hidden=!(matCat==='leather' && hasTypes);
   if(el.hidden) leatherType='';
@@ -124,12 +205,11 @@ function setDept(d){
   owLen='';
   [...$('dept').children].forEach(b=>b.classList.toggle('on',b.getAttribute('data-d')===dept));
   P=ALL.filter(p=>p.department===dept);
-  $('tabs').innerHTML=TABS[dept].map(([k,l])=>`<button type="button" data-k="${k}">${l}</button>`).join('');
+  rebuildCatSelect();
   fillSelect('line',P.map(p=>p.line));
-  fillSelect('color',P.map(p=>p.color_group));
+  rebuildColorSelect();
   document.title=dept==='bags'?'Prada 女裝手袋目錄':'Prada 女裝成衣目錄';
   $('pageTitle').textContent=dept==='bags'?'PRADA 女裝手袋目錄':'PRADA 女裝成衣目錄';
-  // reset material filters that don't apply when switching dept
   const allowed=(dept==='bags'?MAT_BAGS:MAT_RTW).map(([k])=>k);
   if(matCat && !allowed.includes(matCat)){ matCat=''; leatherType=''; }
   rebuildMatSelects();
@@ -138,7 +218,7 @@ function setDept(d){
 fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return r.json()}).then(d=>{
  ALL=(d.products||[]).map(p=>{if(!p.department)p.department='bags';return p;});
  $('dept').addEventListener('click',e=>{const b=e.target.closest('button[data-d]');if(!b)return;setDept(b.getAttribute('data-d'))});
- $('tabs').addEventListener('click',e=>{const b=e.target.closest('button[data-k]');if(!b)return;tab=b.getAttribute('data-k')||'';if(!OW_TABS.has(tab))owLen='';render()});
+ $('cat').addEventListener('change',()=>{tab=$('cat').value||'';if(!OW_TABS.has(tab))owLen='';render()});
  $('matCat').addEventListener('change',()=>{
    matCat=$('matCat').value||'';
    if(matCat!=='leather') leatherType='';
@@ -147,11 +227,25 @@ fetch('data.json?v='+DATA_VER).then(r=>{if(!r.ok)throw new Error('load');return 
  });
  $('leatherType').addEventListener('change',()=>{leatherType=$('leatherType').value||'';render()});
  $('owLen').addEventListener('change',()=>{owLen=$('owLen').value||'';render()});
- ['q','line','color','price','sort'].forEach(i=>$(i).addEventListener('input',render));
+ $('colorBtn').addEventListener('click',e=>{
+   e.stopPropagation();
+   const open=$('colorMenu').hidden;
+   if(open){ $('colorMenu').hidden=false; $('colorBtn').setAttribute('aria-expanded','true'); }
+   else closeColorMenu();
+ });
+ $('colorMenu').addEventListener('click',e=>{
+   const b=e.target.closest('button[data-v],button.color-opt');
+   if(!b)return;
+   setColorValue(b.getAttribute('data-v')||'');
+   render();
+ });
+ document.addEventListener('click',e=>{
+   if(!e.target.closest('#colorWrap')) closeColorMenu();
+ });
+ ['q','line','price','sort'].forEach(i=>$(i).addEventListener('input',render));
  setDept('bags');
 }).catch(()=>{$('count').textContent='載入失敗，請重新整理';});
 function render(){
- [...$('tabs').children].forEach(b=>b.classList.toggle('on',(b.getAttribute('data-k')||'')===tab));
  rebuildOwSelect();
  const q=$('q').value.trim().toLowerCase(),[lo,hi]=($('price').value||'0-9999999').split('-').map(Number);
  let r=P.filter(p=>{
