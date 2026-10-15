@@ -1,0 +1,18 @@
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,"PingFang HK","Noto Sans TC",sans-serif;color:#111;background:#fafafa}
+header{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid #ddd;padding:10px 12px}
+h1{font-size:18px;margin:0 0 8px;letter-spacing:.05em}
+.tabs{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px}.tabs button{flex:none;border:1px solid #111;background:#fff;border-radius:18px;padding:6px 12px;font-size:14px}
+.tabs button.on{background:#111;color:#fff}
+.filters{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:6px;margin-top:8px}
+select,input{font-size:16px;padding:6px;border:1px solid #bbb;border-radius:6px;width:100%;background:#fff}
+.count{font-size:13px;color:#666;margin:8px 12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;padding:0 12px 90px}
+.card{background:#fff;border:1px solid #e3e3e3;border-radius:8px;overflow:hidden;position:relative;display:flex;flex-direction:column}
+.card.sel{outline:3px solid #111}.card img{width:100%;aspect-ratio:1;object-fit:contain;background:#f2f2f2}
+.card .b{padding:8px;font-size:13px;line-height:1.4;flex:1}.nm{font-weight:600}.cd{font-family:monospace;font-size:11px;color:#555;word-break:break-all}
+.pr{font-weight:600;margin-top:4px}.dot{display:inline-block;width:10px;height:10px;border-radius:50%;border:1px solid #999;vertical-align:middle;margin-right:4px}
+.card label{position:absolute;top:6px;left:6px;background:#fff;border-radius:6px;padding:4px 6px;font-size:13px;box-shadow:0 1px 3px #0003}
+.card input[type=checkbox]{width:20px;height:20px;vertical-align:middle}
+.bar{position:fixed;bottom:0;left:0;right:0;background:#111;color:#fff;padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center}
+.bar button{font-size:15px;padding:9px 14px;border-radius:6px;border:0}.bar .go{background:#fff;color:#111;font-weight:600;margin-left:auto}
+.bar .clr{background:#444;color:#fff}a{color:inherit}
