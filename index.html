@@ -6,29 +6,52 @@
 <input id="q" type="search" placeholder="搜尋名稱或貨號">
 <select id="line"><option value="">全部系列</option></select>
 <select id="color"><option value="">全部顏色</option></select>
-<select id="mat"><option value="">全部物料</option></select>
 <select id="price"><option value="">全部價錢</option><option value="0-10000">HK$10,000 以下</option><option value="10000-20000">HK$10,000–20,000</option><option value="20000-30000">HK$20,000–30,000</option><option value="30000-50000">HK$30,000–50,000</option><option value="50000-9999999">HK$50,000 以上</option></select>
 <select id="sort"><option value="">預設排序</option><option value="pa">價錢由低至高</option><option value="pd">價錢由高至低</option></select>
-</div></header>
+</div>
+<div class="mat-block">
+  <div class="mat-label">物料</div>
+  <div class="chips" id="matCat"></div>
+  <div class="chips leather-sub" id="leatherType" hidden></div>
+</div>
+</header>
 <div class="count" id="count">載入中…</div><div class="grid" id="grid"></div>
 <div class="bar"><span id="n">已揀 0 款</span><button class="clr" id="clr">清除</button><button class="go" id="share">分享俾客人</button></div>
 <script>
 const TABS=[['','全部'],['shoulder','肩背包'],['mini','迷你手袋'],['tote','托特包'],['top','手挽包'],['backpack','背囊'],['briefcase','公事包']];
-let P=[],tab='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
+const MAT_CATS=[['','全部物料'],['leather','皮革'],['nylon','尼龍'],['other','其他']];
+const LEATHER_TYPES=[['saffiano','Saffiano'],['nappa','Nappa'],['vernice','Vernice'],['suede','Suede'],['other_leather','其他皮革']];
+let P=[],tab='',matCat='',leatherType='',sel=new Set(JSON.parse(localStorage.getItem('sel')||'[]'));
 const $=id=>document.getElementById(id),fmt=n=>'HK$ '+n.toLocaleString('en');
 const esc=s=>(s??'').toString().replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+function matLabel(p){
+  if(p.primary_material_category==='nylon') return '尼龍';
+  if(p.primary_material_category==='other') return '其他';
+  const m={saffiano:'Saffiano',nappa:'Nappa',vernice:'Vernice',suede:'Suede',other_leather:'皮革'};
+  return m[p.leather_type]||'皮革';
+}
 fetch('data.json').then(r=>r.json()).then(d=>{P=d.products;
  const fill=(id,vals)=>[...new Set(vals)].filter(Boolean).sort().forEach(v=>$(id).add(new Option(v,v)));
- fill('line',P.map(p=>p.line));fill('color',P.map(p=>p.color_group));fill('mat',P.map(p=>p.material_group));
- $('tabs').innerHTML=TABS.map(([k,l])=>`<button data-k="${k}">${l}</button>`).join('');
+ fill('line',P.map(p=>p.line));fill('color',P.map(p=>p.color_group));
+ $('tabs').innerHTML=TABS.map(([k,l])=>`<button type="button" data-k="${k}">${l}</button>`).join('');
  $('tabs').onclick=e=>{if(e.target.dataset.k!==undefined){tab=e.target.dataset.k;render()}};
- ['q','line','color','mat','price','sort'].forEach(i=>$(i).oninput=render);render();});
+ $('matCat').innerHTML=MAT_CATS.map(([k,l])=>`<button type="button" data-c="${k}">${l}</button>`).join('');
+ $('matCat').onclick=e=>{const c=e.target.dataset.c;if(c===undefined)return;matCat=c;if(matCat!=='leather')leatherType='';render()};
+ $('leatherType').innerHTML=LEATHER_TYPES.map(([k,l])=>`<button type="button" data-t="${k}">${l}</button>`).join('');
+ $('leatherType').onclick=e=>{const t=e.target.dataset.t;if(t===undefined)return;leatherType=leatherType===t?'':t;render()};
+ ['q','line','color','price','sort'].forEach(i=>$(i).oninput=render);render();});
 function render(){
  [...$('tabs').children].forEach(b=>b.classList.toggle('on',b.dataset.k===tab));
+ [...$('matCat').children].forEach(b=>b.classList.toggle('on',b.dataset.c===matCat));
+ const showLeather=matCat==='leather';
+ $('leatherType').hidden=!showLeather;
+ if(showLeather)[...$('leatherType').children].forEach(b=>b.classList.toggle('on',b.dataset.t===leatherType));
  const q=$('q').value.trim().toLowerCase(),[lo,hi]=($('price').value||'0-1e9').split('-').map(Number);
  let r=P.filter(p=>(!tab||p.subcats.includes(tab))&&(!$('line').value||p.line===$('line').value)&&(!$('color').value||p.color_group===$('color').value)
-  &&(!$('mat').value||p.material_group===$('mat').value)&&p.price>=lo&&p.price<hi
-  &&(!q||(p.name_en+' '+p.name_zh+' '+p.code+' '+p.color_zh+' '+p.color_en).toLowerCase().includes(q)));
+  &&(!matCat||p.primary_material_category===matCat)
+  &&(!leatherType||(p.primary_material_category==='leather'&&p.leather_type===leatherType))
+  &&p.price>=lo&&p.price<hi
+  &&(!q||(p.name_en+' '+p.name_zh+' '+p.code+' '+p.color_zh+' '+p.color_en+(p.material||'')).toLowerCase().includes(q)));
  if($('sort').value=='pa')r.sort((a,b)=>a.price-b.price);if($('sort').value=='pd')r.sort((a,b)=>b.price-a.price);
  $('count').textContent=`共 ${r.length} 款`;
  $('grid').innerHTML=r.map(p=>`<div class="card${sel.has(p.code)?' sel':''}" data-c="${p.code}">
@@ -36,7 +59,7 @@ function render(){
  <a href="${p.url}" target="_blank"><img loading="lazy" src="${p.image}" alt=""></a><div class="b">
  <div class="nm">${esc(p.name_zh)}</div><div class="cd">${p.code}</div>
  <div><span class="dot" style="background:${p.color_hex}"></span>${esc(p.color_zh)}${p.size?' · '+esc(p.size):''}</div>
- <div style="color:#666">${esc(p.line||'')}${p.material?' · '+esc(p.material):''}</div>
+ <div style="color:#666">${esc(p.line||'')}${p.line||p.material||p.primary_material_category?' · ':''}${esc(p.material||matLabel(p))}</div>
  <div class="pr">${fmt(p.price)}</div></div></div>`).join('');upd();}
 $('grid').onchange=e=>{const c=e.target.closest('.card');if(!c)return;const k=c.dataset.c;e.target.checked?sel.add(k):sel.delete(k);c.classList.toggle('sel',e.target.checked);upd()};
 function upd(){$('n').textContent=`已揀 ${sel.size} 款`;localStorage.setItem('sel',JSON.stringify([...sel]))}

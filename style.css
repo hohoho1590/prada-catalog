@@ -16,3 +16,9 @@ select,input{font-size:16px;padding:6px;border:1px solid #bbb;border-radius:6px;
 .bar{position:fixed;bottom:0;left:0;right:0;background:#111;color:#fff;padding:10px 12px calc(10px + env(safe-area-inset-bottom));display:flex;gap:8px;align-items:center}
 .bar button{font-size:15px;padding:9px 14px;border-radius:6px;border:0}.bar .go{background:#fff;color:#111;font-weight:600;margin-left:auto}
 .bar .clr{background:#444;color:#fff}a{color:inherit}
+.mat-block{margin-top:8px}.mat-label{font-size:13px;color:#555;margin-bottom:4px}
+.chips{display:flex;gap:6px;overflow-x:auto;padding-bottom:4px;flex-wrap:wrap}
+.chips button{flex:none;border:1px solid #111;background:#fff;border-radius:18px;padding:6px 12px;font-size:14px}
+.chips button.on{background:#111;color:#fff}
+.leather-sub{margin-top:6px}.leather-sub button{border-color:#666;color:#333}
+.leather-sub button.on{background:#333;border-color:#333;color:#fff}
