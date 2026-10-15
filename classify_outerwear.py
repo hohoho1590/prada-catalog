@@ -41,6 +41,7 @@ DATA = ROOT / "data.json"
 RAW = ROOT / "raw_rtw.json"
 MAP_OUT = ROOT / "outerwear_length_map.json"
 DEBUG_OUT = ROOT / "outerwear_img_class.json"
+OVERRIDES = ROOT / "outerwear_overrides.json"
 
 GARMENT = (
     "jacket", "coat", "raincoat", "parka", "cape", "blouson", "bomber",
@@ -228,10 +229,31 @@ def main():
             "height_cm": p.get("height_cm"),
             "name": p.get("name_en"),
         }
+    # Manual overrides (user corrections) win over image/name heuristics.
+    ov = {}
+    if OVERRIDES.exists():
+        raw = json.load(open(OVERRIDES))
+        ov = {k: v for k, v in raw.items() if not str(k).startswith("_") and v in ("short", "long")}
+    for code, lab in ov.items():
+        if code in final:
+            final[code]["label"] = lab
+            final[code]["refine"] = "manual_override"
+        else:
+            final[code] = {
+                "label": lab,
+                "refine": "manual_override",
+                "ratio": None,
+                "method": None,
+                "body": None,
+                "sleeve": None,
+                "height_cm": None,
+                "name": None,
+            }
     simple = {c: v["label"] for c, v in final.items()}
     json.dump(simple, open(MAP_OUT, "w"), ensure_ascii=False, indent=2)
     json.dump(final, open(DEBUG_OUT, "w"), ensure_ascii=False, indent=2)
     print("candidates", len(cands))
+    print("overrides", len(ov), sorted(ov))
     print("labels", Counter(simple.values()))
     print("why", Counter(v["refine"] for v in final.values()))
     print("wrote", MAP_OUT.name, DEBUG_OUT.name)

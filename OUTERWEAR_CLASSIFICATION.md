@@ -21,3 +21,11 @@ Script: `classify_outerwear.py` → `outerwear_length_map.json` (consumed by `bu
 6. Decide with image ratio plus name/height tie-breaks for near-equal cases (raincoats, coats, cropped/bomber/blouson → short, etc.).
 
 Rebuild: run `classify_outerwear.py` (images in `ow_imgs/` if present) then `python3 build.py`.
+
+## Manual overrides
+
+File: `outerwear_overrides.json` — `{productCode: "short"|"long"}`.
+
+Loaded by `build.py` (wins over `outerwear_length_map.json`) and by
+`classify_outerwear.py` when rewriting the map, so rebuilds keep user
+corrections (e.g. 29S427 / 292252 packshots marked 短外套).

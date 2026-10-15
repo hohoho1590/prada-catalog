@@ -248,12 +248,26 @@ def classify_sleeve(name_en):
     return "unknown"
 
 
+def load_outerwear_overrides():
+    """Manual short|long fixes; win over image/name map on rebuild."""
+    p = Path("outerwear_overrides.json")
+    if not p.exists():
+        return {}
+    raw = json.load(open(p))
+    return {k: v for k, v in raw.items() if not str(k).startswith("_") and v in ("short", "long")}
+
+
 def load_outerwear_map():
     """code -> short|long from classify_outerwear.py (image body vs sleeve)."""
+    m = {}
     p = Path("outerwear_length_map.json")
     if p.exists():
-        return json.load(open(p))
-    return {}
+        m.update(json.load(open(p)))
+    ov = load_outerwear_overrides()
+    if ov:
+        m.update(ov)
+        print("outerwear overrides", len(ov), sorted(ov))
+    return m
 
 
 def is_outerwear_garment(name_en, subcats):
@@ -465,7 +479,7 @@ def main():
         "source": {
             "bags": "https://www.prada.com/hk/en/womens/bags/c/10062HK",
             "rtw": "https://www.prada.com/hk/en/womens/ready-to-wear/c/10048HK",
-            "ui": "short-long-outerwear-v8",
+            "ui": "short-long-outerwear-v9",
         },
         "fetched": date.today().isoformat(),
         "count": len(out),

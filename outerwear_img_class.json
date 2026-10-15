@@ -91,8 +91,8 @@
     ]
   },
   "292252_1WQ9_F0E18_S_WMO": {
-    "label": "long",
-    "refine": "name_long",
+    "label": "short",
+    "refine": "manual_override",
     "ratio": 1.083,
     "method": "outer",
     "body": 286,
@@ -624,8 +624,8 @@
     ]
   },
   "29S427_199Y_F0002_S_OOO": {
-    "label": "long",
-    "refine": "name_long",
+    "label": "short",
+    "refine": "manual_override",
     "ratio": 1.004,
     "method": "outer",
     "body": 263,
